@@ -1,42 +1,139 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#navBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #3dd66e;
+  padding: 1rem;
+}
+
+#icone {
+  margin-right: 10rem;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  padding: 0.5rem;
+  font-size: 28px;
+}
+
+.link:hover {
+  transition: 0.2s;
+  color: white;
+}
+
+#homePag {
+  display: flex;
+  height: 100vh;
+  background-color: white;
+  overflow: hidden;
+}
+
+#pagPrincipal {
+  height: 100vh;
+}
+
+#div-esq {
+  background-image: url("/imagemFundo.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 40vw;
+  height: 100vh;
+}
+
+#div-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 350px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  gap: 10px;
+  box-shadow: 2px 2px 6px 0px;
+}
+
+.formulario h2 {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.formulario button {
+  background-color: #75d192;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  max-width: 320px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.formulario button:hover {    
+  cursor: pointer;
+  background-color: #349854;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
-.card {
-  padding: 2em;
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.read-the-docs {
-  color: #888;
+.form-group input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.footer {
+  background-color: #5ec57e;
+  color: black;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links a {
+  color: black;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #fff;
 }
