@@ -1,6 +1,6 @@
 function Container (props){
     return(
-        <div className="DivBody">{props.children}</div>
+        <div className={`DivBody ${props.customClass}`}>{props.children}</div>
     )
 }
 

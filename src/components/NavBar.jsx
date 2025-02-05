@@ -9,10 +9,10 @@ function Navbar() {
           <img src="icon.png" alt="simbolos relacionados a temática de orçamento" width={"85px"} height={"80px"}  />
         </Link>
         </div>
-        <Link to="/" className="link">
+        <Link to="/Costs" className="link">
           Despesas
         </Link>
-        <Link to="/" className="link">
+        <Link to="/Resume" className="link">
           Gráfico
         </Link>
       </nav>
