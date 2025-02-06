@@ -172,7 +172,8 @@ function MainPage() {
         </button>
       </div>
     </section>
-  );
-}
+      );
+    }
+    
+    export default MainPage;
 
-export default MainPage;

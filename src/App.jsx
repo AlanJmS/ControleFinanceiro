@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-route
 import Navbar from './components/NavBar';
 import Container from './components/Container';
 import HomePage from './pages/Home';
+import Container from './components/Container';
+import HomePage from './pages/Home';
 import Footer from './components/Footer';
 import MainPage from './Pages/MainPage';
 import './App.css'
