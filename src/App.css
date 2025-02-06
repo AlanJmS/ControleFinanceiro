@@ -1,7 +1,30 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#root,
+body,
+html {
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.min-height {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  min-height: 80%;
 }
 
 #navBar {
@@ -9,12 +32,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  background-color: #3dd66e;
-  padding: 1rem;
+  background-color: #20ff8c;
+  padding: 0.75rem;
 }
 
 #icone {
-  margin-right: 10rem;
+  margin-right: 55rem;
 }
 
 .link {
@@ -32,14 +55,11 @@
 
 #homePag {
   display: flex;
-  height: 100vh;
+  height: 100%;
   background-color: white;
   overflow: hidden;
 }
 
-#pagPrincipal {
-  height: 100vh;
-}
 
 #div-esq {
   background-image: url("/imagemFundo.png");
@@ -51,69 +71,88 @@
 }
 
 #div-form {
-  display: flex;
+    display: flex;
   justify-content: center;
   align-items: center;
-  width: 50vw;
+  width: 60vw;
 }
 
 .formulario {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 350px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: white;
-  gap: 10px;
-  box-shadow: 2px 2px 6px 0px;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
 }
 
 .formulario h2 {
-  text-align: center;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .formulario button {
-  background-color: #75d192;
-  padding: 10px;
+  width: 100%;
+  background: #81c784;
+  color: white;
+  padding: 0.75rem;
   border: none;
-  border-radius: 10px;
-  max-width: 320px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
-.formulario button:hover {    
-  cursor: pointer;
-  background-color: #349854;
+
+.formulario button:hover {
+  background: #4caf50;
+  transform: translateY(-2px);
 }
+
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
+  padding: 5px;
 }
 
 .form-group label {
-  margin-bottom: 5px;
   font-weight: bold;
+  display: flex;
+  margin-bottom: 10px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   width: 100%;
-  max-width: 300px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 0.90rem;
+  border: 2px solid #c8e6c9;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #81c784;
+  box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.2);
+}
+
+#pagPrincipal{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 30%;
+  border-style: solid;
+  border-color: red;
 }
 
 .footer {
-  background-color: #5ec57e;
+  background-color: #20ff8c;
   color: black;
   text-align: center;
-  padding: 15px 0;
+  padding: 15px;
   position: relative;
-  bottom: 0;
   width: 100%;
 }
 
@@ -130,10 +169,11 @@
 }
 
 .footer-links a {
-  color: black;
+  color:black;
   text-decoration: none;
 }
 
 .footer-links a:hover {
-  color: #fff;
+  transition: 0.2s;
+  color: #5ec57e;
 }
