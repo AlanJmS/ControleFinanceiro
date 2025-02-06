@@ -2,13 +2,12 @@ import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-route
 import Navbar from './components/NavBar';
 import Container from './components/Container';
 import HomePage from './pages/Home';
-import Container from './components/Container';
-import HomePage from './pages/Home';
-import Footer from './components/Footer';
-import MainPage from './Pages/MainPage';
-import './App.css'
+import MainPage from './pages/MainPage';
 import ResumePage from './pages/ResumePage';
 import Gastos from './pages/Gastos';
+import Footer from './components/Footer';
+import { GastosProvider } from '../src/context/GastosContext'; 
+import './App.css';
 
 function Layout() {
   const location = useLocation();
@@ -22,8 +21,8 @@ function Layout() {
           <Route path="/" element={<Navigate to="/HomePage" />} />
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/MainPage" element={<MainPage />} />
-          <Route path='/Resume' element={<ResumePage />} />
-          <Route path='/Gastos' element={<Gastos/>} />
+          <Route path="/Resume" element={<ResumePage />} />
+          <Route path="/Gastos" element={<Gastos />} />
         </Routes>
       </Container>
       {!isHomePage && <Footer />}
@@ -33,9 +32,11 @@ function Layout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout />
-    </BrowserRouter>
+    <GastosProvider>  
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
+    </GastosProvider>
   );
 }
 

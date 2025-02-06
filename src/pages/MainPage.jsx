@@ -1,12 +1,20 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom"; // Para acessar dados passados via state
+import { useGastos } from "../context/GastosContext"; // Importando o contexto
 
 function MainPage() {
-  const { state } = useLocation();
-  const { nome, salario } = state || {};
-  const navigate = useNavigate();
+  const { gastos, adicionarGasto, limparGastos } = useGastos(); // Usando o contexto
+  const location = useLocation(); // Obtendo a localização para acessar os dados passados via state
+  const navigate = useNavigate(); // Para navegação
 
-  const [gastosList, setGastosList] = useState([]);
+  // Recuperar dados do localStorage ou do state passado via navigate
+  const [nome, setNome] = useState(() => {
+    return localStorage.getItem("nome") || location.state?.nome || "";
+  });
+
+  const [salarioInput, setSalario] = useState(() => {
+    return localStorage.getItem("salario") || location.state?.salario || "";
+  });
 
   const [gasto, setGasto] = useState({
     nome: "",
@@ -14,6 +22,12 @@ function MainPage() {
     tipo: "alimentação",
     valor: "",
   });
+
+  // Atualiza o localStorage sempre que os dados do usuário forem alterados
+  useEffect(() => {
+    if (nome) localStorage.setItem("nome", nome);
+    if (salarioInput) localStorage.setItem("salario", salarioInput);
+  }, [nome, salarioInput]);
 
   const converterParaNumero = (valor) => {
     return parseFloat(valor.toString().replace(",", "."));
@@ -37,7 +51,7 @@ function MainPage() {
       valor: valorNumerico.toFixed(2),
     };
 
-    setGastosList([...gastosList, novoGasto]);
+    adicionarGasto(novoGasto); // Adicionando gasto via contexto
 
     setGasto({
       nome: "",
@@ -48,9 +62,8 @@ function MainPage() {
   };
 
   const prepararDadosParaGrafico = () => {
-    const salarioNumero = converterParaNumero(salario);
-
-    const gastosConvertidos = gastosList.map((gasto) => ({
+    const salarioNumero = converterParaNumero(salarioInput);
+    const gastosConvertidos = gastos.map((gasto) => ({
       ...gasto,
       valor: converterParaNumero(gasto.valor),
     }));
@@ -61,18 +74,23 @@ function MainPage() {
     };
   };
 
+  const handleGrafico = () => {
+    const dadosParaGrafico = prepararDadosParaGrafico();
+    navigate("/resume", { state: dadosParaGrafico });
+  };
+
+  const handleVerGastos = () => {
+    navigate("/gastos", { state: { gastos, salarioInput } });
+  };
+
   return (
     <section>
       <div id="pagPrincipal">
         <h1>Detalhes do Usuário</h1>
-        {nome && salario ? (
-          <div>
-            <p>Bem-vindo, {nome}!</p>
-            <p>Salário: R${salario}</p>
-          </div>
-        ) : (
-          <p>Sem dados para exibir.</p>
-        )}
+        <div>
+          <p>Bem-vindo, {nome}!</p> {/* Nome vindo de Home */} 
+          <p>Salário: R${salarioInput}</p> {/* Salário vindo de Home */}
+        </div>
       </div>
 
       <div id="form-gastos">
@@ -119,61 +137,31 @@ function MainPage() {
             />
           </label>
           <button type="submit">Cadastrar Gasto</button>
-          <div
-            style={{
-              backgroundColor: "#f8f9fa",
-              padding: "15px",
-              borderRadius: "5px",
-              marginBottom: "20px",
-              maxHeight: "200px",
-              overflowY: "auto",
-              border: "1px solid #ccc",
-            }}
-          >
-            <h4>Gastos Cadastrados:</h4>
-            {gastosList.length > 0 ? (
-              gastosList.map((gasto, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: "5px",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  <p>
-                    <strong>{gasto.nome}</strong> - R${gasto.valor} (
-                    {gasto.tipo})
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p>Nenhum gasto cadastrado ainda.</p>
-            )}
-          </div>
         </form>
+      </div>
 
-        <button
-          onClick={() =>
-            navigate("/gastos", { state: { gastos: gastosList, salario } })
-          }
-          style={{ marginTop: "20px", marginRight: "10px" }}
-        >
-          Ver Todos os Gastos
-        </button>
+      <div id="lista-gastos">
+        <h2>Lista de Gastos</h2>
+        {gastos.length > 0 ? (
+          <ul>
+            {gastos.map((gasto, index) => (
+              <li key={index}>
+                <strong>{gasto.nome}</strong> - {gasto.tipo} - R${gasto.valor} - {gasto.data}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Não há gastos cadastrados.</p>
+        )}
+      </div>
 
-        <button
-          onClick={() => {
-            const dadosParaGrafico = prepararDadosParaGrafico();
-            navigate("/resume", { state: dadosParaGrafico });
-          }}
-          style={{ marginTop: "20px" }}
-        >
-          Ver Gráfico de Gastos
-        </button>
+      <div id="acoes">
+        <button onClick={handleGrafico}>Gerar Gráfico</button>
+        <button onClick={handleVerGastos}>Ver Gastos</button>
+        <button onClick={() => limparGastos()}>Limpar Gastos</button>
       </div>
     </section>
-      );
-    }
-    
-    export default MainPage;
+  );
+}
 
+export default MainPage;
