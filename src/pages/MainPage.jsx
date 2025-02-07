@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // Para acessar dados passados via state
-import { useGastos } from "../context/GastosContext"; // Importando o contexto
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { useGastos } from "../context/GastosContext";
 
 function MainPage() {
-  const { gastos, adicionarGasto, limparGastos } = useGastos(); // Usando o contexto
-  const location = useLocation(); // Obtendo a localização para acessar os dados passados via state
-  const navigate = useNavigate(); // Para navegação
+  const { gastos, adicionarGasto, limparGastos } = useGastos();
 
-  // Recuperar dados do localStorage ou do state passado via navigate
+  const location = useLocation();
+
+  const navigate = useNavigate();
+
   const [nome, setNome] = useState(() => {
     return localStorage.getItem("nome") || location.state?.nome || "";
   });
@@ -23,7 +25,6 @@ function MainPage() {
     valor: "",
   });
 
-  // Atualiza o localStorage sempre que os dados do usuário forem alterados
   useEffect(() => {
     if (nome) localStorage.setItem("nome", nome);
     if (salarioInput) localStorage.setItem("salario", salarioInput);
@@ -51,7 +52,7 @@ function MainPage() {
       valor: valorNumerico.toFixed(2),
     };
 
-    adicionarGasto(novoGasto); // Adicionando gasto via contexto
+    adicionarGasto(novoGasto);
 
     setGasto({
       nome: "",
@@ -88,8 +89,8 @@ function MainPage() {
       <div id="pagPrincipal">
         <h1>Detalhes do Usuário</h1>
         <div>
-          <p>Bem-vindo, {nome}!</p> {/* Nome vindo de Home */} 
-          <p>Salário: R${salarioInput}</p> {/* Salário vindo de Home */}
+          <p>Bem-vindo, {nome}!</p>
+          <p>Salário: R${salarioInput}</p>
         </div>
       </div>
 
@@ -146,7 +147,8 @@ function MainPage() {
           <ul>
             {gastos.map((gasto, index) => (
               <li key={index}>
-                <strong>{gasto.nome}</strong> - {gasto.tipo} - R${gasto.valor} - {gasto.data}
+                <strong>{gasto.nome}</strong> - {gasto.tipo} - R${gasto.valor} -{" "}
+                {gasto.data}
               </li>
             ))}
           </ul>

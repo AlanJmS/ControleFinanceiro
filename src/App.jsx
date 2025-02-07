@@ -8,6 +8,7 @@ import Gastos from './pages/Gastos';
 import Footer from './components/Footer';
 import { GastosProvider } from '../src/context/GastosContext'; 
 import './App.css';
+import Metas from './pages/Metas';
 
 function Layout() {
   const location = useLocation();
@@ -23,6 +24,7 @@ function Layout() {
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/Resume" element={<ResumePage />} />
           <Route path="/Gastos" element={<Gastos />} />
+          <Route path="/Metas" element={<Metas />}/>
         </Routes>
       </Container>
       {!isHomePage && <Footer />}

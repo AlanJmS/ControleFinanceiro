@@ -4,19 +4,20 @@ import { useNavigate } from "react-router-dom";
 function HomePage() {
   const navigate = useNavigate();
 
-  // Recuperar os valores salvos no localStorage ao carregar a página
+
   const [nome, setNome] = useState(localStorage.getItem("nome") || "");
   const [salario, setSalario] = useState(localStorage.getItem("salario") || "");
-  const [profissao, setProfissao] = useState(""); // Ainda não estamos salvando profissão
+  const [profissao, setProfissao] = useState(""); 
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Salvar no localStorage para persistência
+
     localStorage.setItem("nome", nome);
     localStorage.setItem("salario", salario);
 
-    // Navegar para a MainPage, os dados agora também estão salvos no localStorage
+
     navigate("/MainPage", {
       state: { nome, salario },
     });

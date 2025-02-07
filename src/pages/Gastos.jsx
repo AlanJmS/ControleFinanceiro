@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // Pegando os dados passados
-import Card from '../components/Card';  // Importando o componente de Card
+import { useLocation } from "react-router-dom";
+
+import Card from "../components/Card";
 
 function Gastos() {
   const { state } = useLocation();
-  const { gastos: gastosFromState = [], salario } = state || {}; // Recebe os dados de gastos e salário
+  const { gastos: gastosFromState = [], salario } = state || {};
+
   const [gastos, setGastos] = useState(gastosFromState);
 
   const handleDelete = (index) => {
@@ -13,7 +15,6 @@ function Gastos() {
   };
 
   const handleEdit = (index) => {
-    // Lógica para edição do gasto
     const editedGasto = prompt("Editar o nome do gasto:", gastos[index].nome);
     if (editedGasto) {
       const updatedGastos = [...gastos];

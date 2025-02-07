@@ -1,10 +1,11 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useGastos } from "../context/GastosContext"; // Importando o contexto
+import { useGastos } from "../context/GastosContext";
 
 function Navbar() {
-  const { gastos, salario } = useGastos(); // Usando o contexto
-  const navigate = useNavigate(); // Navegação programática
+  const { gastos, salario } = useGastos();
+
+  const navigate = useNavigate();
 
   return (
     <nav id="navBar">
@@ -19,23 +20,17 @@ function Navbar() {
         </NavLink>
       </div>
 
-      {/* Usando NavLink para navegação e garantindo o estilo de página ativa */}
       <NavLink to="/MainPage" className="link">
         Início
       </NavLink>
 
-      <NavLink
-        to="/Gastos"
-        state={{ gastos, salario }}
-        className="link">
+      <NavLink to="/Metas" className="link">Metas</NavLink>
+
+      <NavLink to="/Gastos" state={{ gastos, salario }} className="link">
         Gastos
       </NavLink>
 
-      <NavLink
-        to="/Resume"
-        state={{ gastos, salario }} // Passando os dados pelo contexto
-        className="link"
-      >
+      <NavLink to="/Resume" state={{ gastos, salario }} className="link">
         Gráfico
       </NavLink>
     </nav>
