@@ -1,49 +1,59 @@
 .card__container {
-    width: 300px;
-    height: 150px;
-    box-shadow: 1px 1px 5px;
-    border-radius: 8px;
-    padding: .5em;
+    width: 430px;
+    height: fit-content;
+    border-radius: 20px;
+    color: #2F2E41;
+    border: 1px solid #2F2E41;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-transform: capitalize;
+    /* justify-content: space-between; */
+    /* padding: 0 10px; */
 
-    & .card__content {
-        display: flex;
+    & .card__title {
         width: 100%;
-        height: 100%;
+        border-radius: 19px 19px 0 0;
+        background-color: #0073E6;
+        padding: 10px;
+        font-size: 18px;
+    }
+
+    & .info__group {
+        display: flex;
         flex-direction: column;
+        gap: 10px;
+        padding: 0 10px;
+        width: 100%;
         justify-content: space-between;
-        align-items: center;
 
-        & .card__title {
-            font-size: 18px;
-        }
-
-        & .card__description {
-            font-size: 14px;
-        }
-
-        & .card__buttons {
+        & .first__div {
             display: flex;
-            gap: 1rem;
-            width: 100%;
-            justify-content: flex-end;
+            gap: 10px;
+        }
 
-            & button {
-                cursor: pointer;
-                border: 1px solid #c5c5c8;
-                display: flex;
-                gap: 10px;
-                padding: 4px 8px;
-                align-items: center;
-                border-radius: 4px;
+    }
 
-                &:hover {
-                    background-color: #c5c5c8;
-                }
+    & .card__buttons {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        justify-content: flex-end;
+        
+        & button {
+            cursor: pointer;
+            border: none;
+            display: flex;
+            gap: 5px;
+            align-items: center;
 
-                &:nth-child(2) {
-                    color: red;
-                }
+            & svg {
+                font-size: 14px;
             }
+        }
+
+        & button:nth-child(2) {
+            color: #C00F0C;
         }
     }
 }

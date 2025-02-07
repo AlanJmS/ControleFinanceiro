@@ -32,32 +32,31 @@ function Gastos() {
   };
 
   return (
-    <div>
-      <h1>Lista de Gastos</h1>
-      {gastos.length > 0 ? (
-        gastos.map((gasto, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: categoryColors[gasto.tipo] || "#ffffff",
-              padding: "10px",
-              margin: "10px",
-              border: "1px solid #ccc",
-            }}
-          >
-            <Card
-              title={gasto.nome}
-              date={gasto.data}
-              categoria={gasto.tipo}
-              valor={`R$ ${gasto.valor}`}
-              onDelete={() => handleDelete(index)}
-              onEdit={() => handleEdit(index)}
-            />
-          </div>
-        ))
-      ) : (
-        <p>Nenhum gasto cadastrado.</p>
-      )}
+    <div style={{padding: '10px'}}>
+      <h2>Lista de Gastos</h2>
+      <div style={{
+            display: "flex",
+            gap: '20px',
+            padding: '10px'
+          }}>
+        {gastos.length > 0 ? (
+          gastos.map((gasto, index) => (
+            <div key={index} >
+              <Card
+                title={gasto.nome}
+                date={gasto.data}
+                categoria={gasto.tipo}
+                valor={`R$ ${gasto.valor}`}
+                onDelete={() => handleDelete(index)}
+                onEdit={() => handleEdit(index)}
+                color={categoryColors[gasto.tipo] || "#ffffff"}
+              />
+            </div>
+          ))
+        ) : (
+          <p>Nenhum gasto cadastrado.</p>
+        )}
+      </div>
     </div>
   );
 }
