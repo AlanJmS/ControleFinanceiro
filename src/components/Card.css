@@ -1,5 +1,5 @@
 .card__container {
-    width: 430px;
+    max-width: 380px;
     height: fit-content;
     border-radius: 20px;
     color: #2F2E41;
@@ -34,7 +34,7 @@
 
     }
 
-    & .card__buttons {
+    & #card__buttons {
         display: flex;
         gap: 10px;
         padding: 10px;
@@ -55,5 +55,21 @@
         & button:nth-child(2) {
             color: #C00F0C;
         }
+    }
+}
+
+@media screen and (max-width: 660px) {
+    .card__container {
+        max-width: 315px;
+        width: fit-content;
+    }
+}
+@media screen and (max-width: 300px) {
+    .card__container {
+        align-items: center;
+    }
+    
+    .first__div {
+        flex-direction: column;
     }
 }

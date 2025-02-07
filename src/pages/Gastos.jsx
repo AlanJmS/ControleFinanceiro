@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import Card from "../components/Card";
+import './Gastos.css';
 
 function Gastos() {
   const { state } = useLocation();
@@ -24,22 +25,18 @@ function Gastos() {
   };
 
   const categoryColors = {
-    alimentação: "#FFEEAA",
-    transporte: "#AACCFF",
-    saúde: "#FFCCCC",
-    entretenimento: "#CCFFCC",
-    geral: "#F0F0F0",
+    Alimentação: "#FFEEAA",
+    Transporte: "#AACCFF",
+    Saúde: "#FFCCCC",
+    Entretenimento: "#CCFFCC",
+    Geral: "#F0F0F0",
     "Categoria Indefinida": "#E0E0E0",
   };
 
   return (
-    <div style={{padding: '10px'}}>
+    <div className="cards__container">
       <h2>Lista de Gastos</h2>
-      <div style={{
-            display: "flex",
-            gap: '20px',
-            padding: '10px'
-          }}>
+      <div className="cards">
         {gastos.length > 0 ? (
           gastos.map((gasto, index) => (
             <div key={index} >

@@ -5,13 +5,20 @@
     place-items: center;
 
     & .chart {
-        width: 400px;
-        height: 300px;
+        width: 450px;
+        height: 350px;
         background-color: #c5c5c59b;
         box-shadow: .75px .75px 3px;
         display: grid;
         place-items: center;
         border-radius: 8px;
-        padding: 10px;
+        padding: 20px;
+    }
+
+    & .recharts-surface {
+        display: flex;
+        max-width: 100%;
+        max-height: fit-content;
+        cursor: pointer;
     }
 }

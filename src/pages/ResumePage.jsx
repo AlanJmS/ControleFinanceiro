@@ -93,14 +93,14 @@ export default function ResumePage() {
     <div className="chart__container">
       <div className="chart">
         <h1>Distribuição de Gastos em Relação ao Salário</h1>
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer width={400} height={250}>
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={80}
+              innerRadius={35}
+              outerRadius={50}
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value"
@@ -115,9 +115,9 @@ export default function ResumePage() {
             </Pie>
             <Tooltip content={<CustomTooltip />} />
             <Legend
-              layout="vertical"
-              align="right"
-              verticalAlign="middle"
+              layout="horizontal"
+              align="center"
+              verticalAlign="bottom"
               formatter={(value) => `${value}`}
             />
           </PieChart>

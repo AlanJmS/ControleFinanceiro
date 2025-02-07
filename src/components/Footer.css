@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   background-color: #2f2e41;
-  gap: 5px;
+  gap: 10px;
   color: white;
   text-align: center;
   width: 100%;
@@ -13,8 +13,10 @@
 }
 
 .footer-links {
+  width: 50%;
   display: flex;
-  gap: 50px;
+  gap: 30px;
+  justify-content: center;
 }
 
 .footer-links a {
@@ -27,4 +29,10 @@
 .footer-links a:hover {
   transition: 0.2s;
   color: #5ec57e;
+}
+
+@media screen and (max-width: 660px) {
+  .footer {
+    flex-flow: column wrap;
+  }
 }

@@ -14,7 +14,7 @@ export default function Card({ title, date, categoria, valor, onDelete, onEdit, 
           <p><strong>Data:</strong> {date}</p>
         </div>
       </div>
-      <div className='card__buttons'>
+      <div id='card__buttons'>
         <button onClick={onEdit}>
           <FaEdit />
           Editar

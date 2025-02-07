@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGastos } from "../context/GastosContext";
-import './MainPage.css'
+import './MainPage.css';
 
 function MainPage() {
   const { gastos, adicionarGasto, limparGastos } = useGastos();

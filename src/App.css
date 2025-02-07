@@ -28,6 +28,7 @@ html {
   align-items: flex-start;
   flex-direction: column;
   min-height: 78%;
+  justify-content: center;
 }
 
 
