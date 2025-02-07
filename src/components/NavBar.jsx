@@ -21,13 +21,16 @@ function Navbar() {
 
       {/* Usando NavLink para navegação e garantindo o estilo de página ativa */}
       <NavLink to="/MainPage" className="link">
-        Cadastrar gasto
+        Início
       </NavLink>
-      
-      <NavLink to="/Gastos" className="link">
-        Lista de gastos
+
+      <NavLink
+        to="/Gastos"
+        state={{ gastos, salario }}
+        className="link">
+        Gastos
       </NavLink>
-      
+
       <NavLink
         to="/Resume"
         state={{ gastos, salario }} // Passando os dados pelo contexto

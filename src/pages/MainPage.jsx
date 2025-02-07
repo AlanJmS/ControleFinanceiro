@@ -76,11 +76,11 @@ function MainPage() {
 
   const handleGrafico = () => {
     const dadosParaGrafico = prepararDadosParaGrafico();
-    navigate("/resume", { state: dadosParaGrafico });
+    navigate("/Resume", { state: dadosParaGrafico });
   };
 
   const handleVerGastos = () => {
-    navigate("/gastos", { state: { gastos, salarioInput } });
+    navigate("/Gastos", { state: { gastos, salarioInput } });
   };
 
   return (
