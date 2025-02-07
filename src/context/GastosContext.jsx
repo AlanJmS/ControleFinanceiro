@@ -10,7 +10,8 @@ export function GastosProvider({ children }) {
   };
 
   const limparGastos = () => {
-    setGastos([]); // Reseta os gastos
+    setGastos([]); 
+
   };
 
   return (
