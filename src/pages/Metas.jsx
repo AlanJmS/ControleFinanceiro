@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Metas.css";
 
 function Metas() {
   const [salario, setSalario] = useState(0);
@@ -41,57 +42,67 @@ function Metas() {
   };
 
   return (
-    <div>
+    <div className="container-metas">
       <h1>Metas Financeiras</h1>
-      <p>Seu salário atual: R$ {salario.toFixed(2)}</p>
+      <div className="metas-grid">
+        {/* Coluna 1: Informações e Formulário */}
+        <div className="coluna-info-form">
+          <p>
+            Seu salário atual: <strong>R$ {salario.toFixed(2)}</strong>
+          </p>
+          <form className="form-metas" onSubmit={handleSubmit}>
+            <label>
+              Descrição da Meta:
+              <textarea
+                name="descricao"
+                value={novaMeta.descricao}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Valor da Meta (R$):
+              <input
+                type="number"
+                name="valor"
+                value={novaMeta.valor}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <button type="submit">Adicionar Meta</button>
+          </form>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Descrição da Meta:
-          <textarea
-            name="descricao"
-            value={novaMeta.descricao}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Valor da Meta (R$):
-          <input
-            type="number"
-            name="valor"
-            value={novaMeta.valor}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <button type="submit">Adicionar Meta</button>
-      </form>
-
-      <h2>Lista de Metas</h2>
-      {metas.length > 0 ? (
-        <ul>
-          {metas.map((meta, index) => (
-            <li
-              key={index}
-              style={{
-                padding: "10px",
-                margin: "5px",
-                border: "1px solid #ccc",
-              }}
-            >
-              <strong>{meta.descricao}</strong> - R$ {meta.valor.toFixed(2)} -
-              Status: {meta.status}
-              <button onClick={() => handleToggleStatus(index)}>
-                {meta.status === "Pendente" ? "Concluída" : "Pendente"}
-              </button>
-              <button onClick={() => handleDelete(index)}>Remover</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Nenhuma meta cadastrada.</p>
-      )}
+        {/* Coluna 2: Lista de Metas */}
+        <div className="lista-metas">
+          <h2>Lista de Metas</h2>
+          {metas.length > 0 ? (
+            <ul>
+              {metas.map((meta, index) => (
+                <li
+                  key={index}
+                  className={
+                    meta.status === "Concluída" ? "concluida" : "pendente"
+                  }
+                >
+                  <div className="meta-info">
+                    <strong>{meta.descricao}</strong>
+                    <span>R$ {meta.valor.toFixed(2)}</span>
+                    <span>Status: {meta.status}</span>
+                  </div>
+                  <button onClick={() => handleToggleStatus(index)}>
+                    {meta.status === "Pendente" ? "Concluir" : "Reabrir"}
+                  </button>
+                  <button onClick={() => handleDelete(index)}>Remover</button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nenhuma meta cadastrada.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

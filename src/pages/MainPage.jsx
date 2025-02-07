@@ -122,11 +122,11 @@ function MainPage() {
           <div className="form-group">
             <label>Tipo do Gasto:</label>
             <select name="tipo" value={gasto.tipo} onChange={handleChange}>
-              <option value="Alimentação">Alimentação</option>
-              <option value="Transporte">Transporte</option>
-              <option value="Saúde">Saúde</option>
-              <option value="Entretenimento">Entretenimento</option>
-              <option value="Geral">Gastos gerais</option>
+              <option value="Alimentação">alimentação</option>
+              <option value="Transporte">transporte</option>
+              <option value="Saúde">saúde</option>
+              <option value="Entretenimento">entretenimento</option>
+              <option value="Geral">gastos gerais</option>
             </select>
           </div>
   
