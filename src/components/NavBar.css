@@ -1,0 +1,35 @@
+#navBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2F2E41;
+    padding: 10px 20px;
+    width: 100%;
+    height: 12%;
+  }
+  
+#navBar img{
+    display: flex;
+    width: 70px;
+    height: 70px;
+}
+
+#nav-link{
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  .link {
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  
+  .link:hover {
+    transition: 0.2s;
+    color: #0073E6;
+  }
