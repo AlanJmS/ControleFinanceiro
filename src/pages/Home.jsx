@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './Home.css'
+import "./Home.css";
 
 function HomePage() {
   const navigate = useNavigate();
-
-
   const [nome, setNome] = useState(localStorage.getItem("nome") || "");
   const [salario, setSalario] = useState(localStorage.getItem("salario") || "");
-  const [profissao, setProfissao] = useState(""); 
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
     localStorage.setItem("nome", nome);
     localStorage.setItem("salario", salario);
-
-
-    navigate("/MainPage", {
-      state: { nome, salario },
-    });
+    navigate("/MainPage");
   };
 
   return (
@@ -41,14 +31,10 @@ function HomePage() {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="profissao">Profissão: </label>
             <input
               type="text"
-              id="profissao"
-              value={profissao}
-              onChange={(e) => setProfissao(e.target.value)}
               required
             />
           </div>

@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useGastos } from "../context/GastosContext";
 import Card from "../components/Card";
 import "./Gastos.css";
 
 function Gastos() {
-  const { state } = useLocation();
+  const { gastos, editarGasto } = useGastos();
   const navigate = useNavigate();
-  const { gastos: gastosFromState = [], salario } = state || {};
-
-  const [gastos, setGastos] = useState(gastosFromState);
   const [editIndex, setEditIndex] = useState(null);
   const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "" });
 
   const handleDelete = (index) => {
-    setGastos(gastos.filter((_, i) => i !== index));
+    const updatedGastos = gastos.filter((_, i) => i !== index);
+    editarGasto(index, updatedGastos);
   };
 
   const handleEditClick = (index) => {
@@ -23,28 +21,21 @@ function Gastos() {
   };
 
   const handleSaveEdit = (index) => {
-    const updatedGastos = [...gastos];
-    updatedGastos[index] = editGasto;
-    setGastos(updatedGastos);
+    editarGasto(index, editGasto);
     setEditIndex(null);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditGasto({ ...editGasto, [name]: name === "valor" ? parseFloat(value) : value });
-  };
-
-  const handleAtualizarGraficos = () => {
-    navigate("/Resume", { state: { gastos, salario } });
+    setEditGasto({ ...editGasto, [name]: value });
   };
 
   const categoryColors = {
-    alimentação: "#FFEEAA",
+    Alimentação: "#FFEEAA",
     Transporte: "#AACCFF",
     Saúde: "#FFCCCC",
     Entretenimento: "#CCFFCC",
     Geral: "#F0F0F0",
-    "Categoria Indefinida": "#E0E0E0",
   };
 
   return (
@@ -55,10 +46,30 @@ function Gastos() {
           gastos.map((gasto, index) => (
             <div key={index}>
               {editIndex === index ? (
-                <div className="edit-card" style={{ backgroundColor: categoryColors[gasto.tipo] || "#ffffff" }}>
-                  <input type="text" name="nome" value={editGasto.nome} onChange={handleChange} className="edit-input" />
-                  <input type="number" name="valor" value={editGasto.valor} onChange={handleChange} className="edit-input" />
-                  <select name="tipo" value={editGasto.tipo} onChange={handleChange} className="edit-input">
+                <div
+                  className="edit-card"
+                  style={{ backgroundColor: categoryColors[gasto.tipo] || "#ffffff" }}
+                >
+                  <input
+                    type="text"
+                    name="nome"
+                    value={editGasto.nome}
+                    onChange={handleChange}
+                    className="edit-input"
+                  />
+                  <input
+                    type="number"
+                    name="valor"
+                    value={editGasto.valor}
+                    onChange={handleChange}
+                    className="edit-input"
+                  />
+                  <select
+                    name="tipo"
+                    value={editGasto.tipo}
+                    onChange={handleChange}
+                    className="edit-input"
+                  >
                     <option value="Alimentação">Alimentação</option>
                     <option value="Transporte">Transporte</option>
                     <option value="Saúde">Saúde</option>
@@ -66,8 +77,12 @@ function Gastos() {
                     <option value="Geral">Geral</option>
                   </select>
                   <div className="edit-buttons">
-                    <button onClick={() => handleSaveEdit(index)} className="save-btn">Salvar</button>
-                    <button onClick={() => setEditIndex(null)} className="cancel-btn">Cancelar</button>
+                    <button onClick={() => handleSaveEdit(index)} className="save-btn">
+                      Salvar
+                    </button>
+                    <button onClick={() => setEditIndex(null)} className="cancel-btn">
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               ) : (
@@ -89,7 +104,7 @@ function Gastos() {
       </div>
 
       {gastos.length > 0 && (
-        <button onClick={handleAtualizarGraficos} className="update-graphs-btn">
+        <button onClick={() => navigate("/Resume")} className="update-graphs-btn">
           Atualizar Gráficos
         </button>
       )}

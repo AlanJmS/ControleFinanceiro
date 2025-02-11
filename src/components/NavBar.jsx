@@ -1,13 +1,8 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useGastos } from "../context/GastosContext";
+import { NavLink } from "react-router-dom";
 import "./NavBar.css";
 
 function Navbar() {
-  const { gastos, salario } = useGastos();
-
-  const navigate = useNavigate();
-
   return (
     <nav id="navBar">
       <NavLink to="/HomePage">
@@ -18,16 +13,13 @@ function Navbar() {
         <NavLink to="/MainPage" className="link">
           Início
         </NavLink>
-
         <NavLink to="/Metas" className="link">
           Metas
         </NavLink>
-
-        <NavLink to="/Gastos" state={{ gastos, salario }} className="link">
+        <NavLink to="/Gastos" className="link">
           Gastos
         </NavLink>
-
-        <NavLink to="/Resume" state={{ gastos, salario }} className="link">
+        <NavLink to="/Resume" className="link">
           Gráfico
         </NavLink>
       </div>
