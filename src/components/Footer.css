@@ -21,6 +21,11 @@ footer {
       & li a {
         color: var(--textColor);
         text-decoration: none;
+
+        &:hover {
+          color: var(--blue);
+          text-decoration: underline;
+        }
       }
     }
 

@@ -1,0 +1,23 @@
+.button {
+    width: 100%;
+    height: 3rem;
+    border: none;
+    border-radius: .5rem;
+    background-color: var(--primaryColor);
+    color: var(--textColor);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all .2s linear;
+
+    &:hover {
+        background-color: var(--primaryColor);
+    }
+}
+
+.blue {
+    background-color: var(--blue);
+}
+
+.green {
+    background-color: var(--green);
+}
