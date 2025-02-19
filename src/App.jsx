@@ -6,7 +6,7 @@ import MainPage from './pages/MainPage';
 import ResumePage from './pages/ResumePage';
 import Gastos from './pages/Gastos';
 import Footer from './components/Footer';
-import { GastosProvider } from '../src/context/GastosContext'; 
+import { GastosProvider } from '../src/context/GastosContext';
 import './App.css';
 import Metas from './pages/Metas';
 
@@ -17,24 +17,24 @@ function Layout() {
   return (
     <>
       {!isHomePage && <Navbar />}
-      <Container customClass="min-height">
+      <Container>
         <Routes>
           <Route path="/" element={<Navigate to="/HomePage" />} />
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/Resume" element={<ResumePage />} />
           <Route path="/Gastos" element={<Gastos />} />
-          <Route path="/Metas" element={<Metas />}/>
+          <Route path="/Metas" element={<Metas />} />
         </Routes>
+        <Footer />
       </Container>
-      {!isHomePage && <Footer />}
     </>
   );
 }
 
 function App() {
   return (
-    <GastosProvider>  
+    <GastosProvider>
       <BrowserRouter>
         <Layout />
       </BrowserRouter>

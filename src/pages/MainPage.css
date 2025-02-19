@@ -1,4 +1,4 @@
-#section-main {
+/* #section-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
@@ -27,9 +27,6 @@
   }
 }
 
-
-
-/* Componentes da esquerda */
 
 .container {
   display: flex;
@@ -118,7 +115,7 @@
   outline: none;
 }
 
-/* Componentes da direita */
+
 
 .section-gastos {
   display: flex;
@@ -236,4 +233,4 @@
   #section-main {
     grid-template-columns: 1fr;
   }
-}
+} */

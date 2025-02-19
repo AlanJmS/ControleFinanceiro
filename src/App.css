@@ -7,31 +7,20 @@
   font-family: "Inter", serif;
 }
 
-#root,
+:root {
+  font-size: 62.5%;
+  --primaryColor: #2C2C2C;
+  --secondaryColor: #4B4B4B;
+  --textColor: #E6E6E6;
+  --blue: #007AFF;
+  --green: #14AE5C;
+}
+
+html,
 body,
-html {
-  height: 100%;
-  /* overflow: hidden; */
+#root {
+    background-color: #EFEFEF;
+    height: 100vh;
+    overflow: hidden;
+    font-size: 1.6rem;
 }
-
-.container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  flex-wrap: wrap;
-}
-
-.min-height {
-  display: flex;
-  background-color: white;
-  align-items: flex-start;
-  flex-direction: column;
-  min-height: 78%;
-  justify-content: center;
-}
-
-
-
-
-

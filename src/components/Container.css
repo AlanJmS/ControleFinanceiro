@@ -1,0 +1,13 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    background-color: var(--primaryColor);
+}
+
+.min-height {
+    min-height: 80%;
+}

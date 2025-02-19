@@ -1,6 +1,8 @@
+import './Container.css';
+
 function Container (props){
     return(
-        <div className={`DivBody ${props.customClass}`}>{props.children}</div>
+        <div className={`container ${props.customClass}`}>{props.children}</div>
     )
 }
 
