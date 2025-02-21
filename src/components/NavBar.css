@@ -1,45 +1,98 @@
 #navBar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #2F2E41;
-  padding: 10px 20px;
   width: 100%;
-  height: 12%;
-}
-
-#navBar img {
+  height: 8rem;
   display: flex;
-  width: 60px;
-  height: 60px;
-}
-
-#nav-link {
-  display: flex;
-  /* width: 30%; */
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  background-color: var(--blue);
+  padding: 2rem 4rem;
+
+  & #logo a {
+    text-decoration: none;
+    font-size: 2.8rem;
+  }
+
+  & #nav-link {
+    display: flex;
+    gap: 2rem;
+
+    & a {
+      text-decoration: none;
+      color: var(--textColor);
+      position: relative;
+      transition: all .3s ease;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 0%;
+        height: .3rem;
+        left: 0;
+        bottom: -.2rem;
+        background-color: var(--textColor);
+        transition: all .3s ease;
+      }
+
+      &:hover::after {
+        width: 100%;
+      }
+
+      &.active {
+        font-weight: bold;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  & #user__info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    color: var(--textColor);
+    cursor: pointer;
+    position: relative;
+
+    & svg {
+      font-size: 1.8rem;
+    }
+
+    & #user__menu {
+      position: absolute;
+      top: calc(100% + 2.7rem);
+      display: flex;
+      flex-direction: column;
+      background-color: var(--blue);
+      width: 19rem;
+      justify-content: center;
+      gap: .5rem;
+      
+      & a {
+        color: var(--textColor);
+        text-decoration: none;
+        width: 100%;
+        font-size: 1.4rem;
+        padding: .8rem 1.6rem;
+        transition: all .3s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
 }
 
-.link {
-  text-decoration: none;
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
-  padding: 8px 16px;
-}
-
-.link:hover {
-  transition: 0.2s;
-  color: #0073E6;
-}
 
 @media screen and (max-width: 660px) {
   #navBar {
     flex-flow: column;
     height: fit-content;
   }
+
   #nav-link {
     flex-wrap: wrap;
   }

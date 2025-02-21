@@ -17,7 +17,7 @@ function Layout() {
   return (
     <>
       {!isHomePage && <Navbar />}
-      <Container>
+      <Container customClass={!isHomePage ? "min-height" : ""} >
         <Routes>
           <Route path="/" element={<Navigate to="/HomePage" />} />
           <Route path="/HomePage" element={<HomePage />} />

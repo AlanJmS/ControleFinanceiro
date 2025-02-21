@@ -9,5 +9,5 @@
 }
 
 .min-height {
-    min-height: 80%;
+    height: calc(100% - 8rem);
 }
