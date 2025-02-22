@@ -32,6 +32,7 @@
     color: var(--textColor);
     overflow-y: auto;
     scrollbar-width: none;
+    box-shadow: .2rem .2rem .4rem rgba(0, 0, 0, .3);
 
     & h2 {
       font-size: 1.6rem;
