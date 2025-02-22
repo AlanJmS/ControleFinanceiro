@@ -18,6 +18,7 @@ import {
 import "./MainPage.css";
 import CadastroGastos from "./CadastroGastos";
 import Card from "../components/Card";
+import Button from "../components/Button";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -181,87 +182,90 @@ export default function MainPage() {
       <div id="chart__container">
         <h2>Resumo de Gastos</h2>
 
-        <div className="chart__container">
-          {mostrarGraficoPizza ? (
-            <div className="chart__">
-              <h2>Distribuição de Gastos</h2>
-              <ResponsiveContainer width="100%" height="100%" id="pie">
-                <PieChart>
-                  <Pie
-                    data={dataPizza}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={70}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    label={({ name, value }) => `${name}: ${value}%`}
-                    isAnimationActive={true}
-                    animationBegin={200}
-                    animationDuration={600}
-                    animationEasing="ease-out"
-                  >
-                    {dataPizza.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div className="chart__">
-              <h2>{tituloGrafico}</h2>
-              {selectedMonth && (
-                <button
-                  onClick={() => setSelectedMonth(null)}
-                  className="back-btn"
+
+        {mostrarGraficoPizza ? (
+          <div className="chart__">
+            <h2>Distribuição de Gastos</h2>
+            <ResponsiveContainer width="100%" height="100%" id="pie">
+              <PieChart>
+                <Pie
+                  data={dataPizza}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={70}
+                  fill="#8884d8"
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}%`}
+                  isAnimationActive={true}
+                  animationBegin={200}
+                  animationDuration={600}
+                  animationEasing="ease-out"
                 >
-                  Voltar à visão mensal
-                </button>
-              )}
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={dataChart}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey={xAxisDataKey}
-                    stroke="#f0f0f0"
-                    tickFormatter={tickFormatter}
-                    {...(!selectedMonth ? { tick: <CustomMonthlyTick /> } : {})}
-                    interval={0}
-                  />
-                  <YAxis stroke="#f0f0f0" />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Line
-                    type="linear"
-                    dataKey="valor"
-                    stroke="#007AFF"
-                    name="Valor total"
-                    isAnimationActive={true}
-                    animationBegin={200}
-                    animationDuration={600}
-                    animationEasing="ease-out"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
+                  {dataPizza.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        ) : (
+          <div className="chart__">
+            <h2>{tituloGrafico}</h2>
+            {selectedMonth && (
+              <button
+                onClick={() => setSelectedMonth(null)}
+                className="back-btn"
+              >
+                Voltar à visão mensal
+              </button>
+            )}
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={dataChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey={xAxisDataKey}
+                  stroke="#f0f0f0"
+                  tickFormatter={tickFormatter}
+                  {...(!selectedMonth ? { tick: <CustomMonthlyTick /> } : {})}
+                  interval={0}
+                />
+                <YAxis stroke="#f0f0f0" />
+                <Tooltip content={<CustomTooltip />} />
+                <Line
+                  type="linear"
+                  dataKey="valor"
+                  stroke="#007AFF"
+                  name="Valor total"
+                  isAnimationActive={true}
+                  animationBegin={200}
+                  animationDuration={600}
+                  animationEasing="ease-out"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
         <div className="button-container">
-          <button onClick={alternarGrafico} className="btn">
-            {mostrarGraficoPizza
-              ? "Ver gráfico de linhas"
-              : "Ver gráfico de consumo"}
-          </button>
+          <Button
+            onClick={alternarGrafico}
+            text={mostrarGraficoPizza ? "Ver gráfico de linhas" : "Ver gráfico de consumo"}
+          />
+          <Button
+            text="Novo gasto"
+            onClick={() => navigate("/CadastroGastos")}
+          />
         </div>
-        <button onClick={() => navigate("/CadastroGastos")}>
+        {/* <button onClick={() => navigate("/CadastroGastos")}>
           Cadastrar novo gasto
-        </button>
+        </button> */}
       </div>
     </section>
   );

@@ -1,12 +1,16 @@
 .button {
     width: 100%;
-    height: 3rem;
+    height: auto;
     border: none;
     border-radius: .5rem;
     background-color: var(--primaryColor);
     color: var(--textColor);
     font-size: 1.4rem;
     cursor: pointer;
+    padding: .6rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all .2s linear;
 
     &:hover {
