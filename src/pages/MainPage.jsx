@@ -12,10 +12,13 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  AreaChart,
 } from "recharts";
 import "./MainPage.css";
+import Card from "../components/Card";
 
 export default function MainPage() {
+  const userName = localStorage.getItem("nome");
   const { gastos, salario } = useGastos();
   const salarioNumero = parseFloat(salario) || 0;
 
@@ -92,14 +95,14 @@ export default function MainPage() {
     return null;
   };
 
-  if (gastos.length === 0 || salarioNumero <= 0) {
-    return (
-      <div className="chart__container">
-        <h1>Distribuição de Gastos em Relação ao Salário</h1>
-        <p>Não há dados suficientes para exibir os gráficos.</p>
-      </div>
-    );
-  }
+  // if (gastos.length === 0 || salarioNumero <= 0) {
+  //   return (
+  //     <div className="chart__container">
+  //       <h1>Distribuição de Gastos em Relação ao Salário</h1>
+  //       <p>Não há dados suficientes para exibir os gráficos.</p>
+  //     </div>
+  //   );
+  // }
 
   let dataChart = dataLinha;
   let xAxisDataKey = "mes";
@@ -163,43 +166,49 @@ export default function MainPage() {
 
   return (
     <section id="section-main">
-      <div className="chart__container">
-        <h1>Análise Financeira</h1>
-        <div className="graficos-container">
+      <div id="cards">
+        <Card text="👋 Olá, " span={`${userName}!`} value={`R$ ${dataPizza[0].total}`} />
+        <Card text="Outros valores" value="R$ 0,00" />
+      </div>
+
+      <div id="chart__container">
+        <h2>Resumo de Gastos</h2>
+
+        <div className="chart__container">
           {mostrarGraficoPizza ? (
-            <div className="grafico-card">
+            <div className="chart__">
               <h2>Distribuição de Gastos</h2>
-              <ResponsiveContainer width="100%" height={400}>
-                <PieChart>
-                  <Pie
-                    data={dataPizza}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    label={({ name, value }) => `${name}: ${value}%`}
-                    isAnimationActive={true}
-                    animationBegin={200}
-                    animationDuration={600}
-                    animationEasing="ease-out"
-                  >
-                    {dataPizza.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend />
-                </PieChart>
+              <ResponsiveContainer width="100%" height="100%" id="pie">
+                  <PieChart>
+                    <Pie
+                      data={dataPizza}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={70}
+                      fill="#8884d8"
+                      paddingAngle={5}
+                      dataKey="value"
+                      label={({ name, value }) => `${name}: ${value}%`}
+                      isAnimationActive={true}
+                      animationBegin={200}
+                      animationDuration={600}
+                      animationEasing="ease-out"
+                    >
+                      {dataPizza.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                  </PieChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="grafico-card">
+            <div className="chart__">
               <h2>{tituloGrafico}</h2>
               {selectedMonth && (
                 <button
@@ -209,7 +218,7 @@ export default function MainPage() {
                   Voltar à visão mensal
                 </button>
               )}
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={dataChart}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
@@ -244,6 +253,7 @@ export default function MainPage() {
           </button>
         </div>
       </div>
+
     </section>
   );
 }

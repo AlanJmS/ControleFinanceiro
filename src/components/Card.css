@@ -1,75 +1,20 @@
 .card__container {
-    max-width: 380px;
-    height: fit-content;
-    border-radius: 20px;
-    color: #2F2E41;
-    border: 1px solid #2F2E41;
+    max-width: 52rem;
+    width: 48rem;
+    height: 8rem;
+    background-color: var(--secondaryColor);
+    border-radius: .8rem;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    text-transform: capitalize;
-    /* justify-content: space-between; */
-    /* padding: 0 10px; */
+    justify-content: space-around;
+    padding: 1rem 2rem;
 
-    & .card__title {
-        width: 100%;
-        border-radius: 19px 19px 0 0;
-        background-color: #0073E6;
-        padding: 10px;
-        font-size: 18px;
-    }
+    & #card__text, #card__value {
+        font-size: 1.6rem;
+        color: var(--textColor);
 
-    & .info__group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 0 10px;
-        width: 100%;
-        justify-content: space-between;
-
-        & .first__div {
-            display: flex;
-            gap: 10px;
+        & span {
+            font-weight: bold;
         }
-
-    }
-
-    & #card__buttons {
-        display: flex;
-        gap: 10px;
-        padding: 10px;
-        justify-content: flex-end;
-        
-        & button {
-            cursor: pointer;
-            border: none;
-            display: flex;
-            gap: 5px;
-            align-items: center;
-
-            & svg {
-                font-size: 14px;
-            }
-        }
-
-        & button:nth-child(2) {
-            color: #C00F0C;
-        }
-    }
-}
-
-@media screen and (max-width: 660px) {
-    .card__container {
-        max-width: 315px;
-        width: fit-content;
-    }
-}
-@media screen and (max-width: 300px) {
-    .card__container {
-        align-items: center;
-    }
-    
-    .first__div {
-        flex-direction: column;
     }
 }
