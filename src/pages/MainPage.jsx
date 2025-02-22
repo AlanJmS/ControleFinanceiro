@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGastos } from "../context/GastosContext";
 import {
   PieChart,
@@ -15,9 +16,11 @@ import {
   AreaChart,
 } from "recharts";
 import "./MainPage.css";
+import CadastroGastos from "./CadastroGastos";
 import Card from "../components/Card";
 
 export default function MainPage() {
+  const navigate = useNavigate();
   const userName = localStorage.getItem("nome");
   const { gastos, salario } = useGastos();
   const salarioNumero = parseFloat(salario) || 0;
@@ -167,7 +170,11 @@ export default function MainPage() {
   return (
     <section id="section-main">
       <div id="cards">
-        <Card text="👋 Olá, " span={`${userName}!`} value={`R$ ${dataPizza[0].total}`} />
+        <Card
+          text="👋 Olá, "
+          span={`${userName}!`}
+          value={`R$ ${dataPizza[0].total}`}
+        />
         <Card text="Outros valores" value="R$ 0,00" />
       </div>
 
@@ -179,32 +186,32 @@ export default function MainPage() {
             <div className="chart__">
               <h2>Distribuição de Gastos</h2>
               <ResponsiveContainer width="100%" height="100%" id="pie">
-                  <PieChart>
-                    <Pie
-                      data={dataPizza}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={50}
-                      outerRadius={70}
-                      fill="#8884d8"
-                      paddingAngle={5}
-                      dataKey="value"
-                      label={({ name, value }) => `${name}: ${value}%`}
-                      isAnimationActive={true}
-                      animationBegin={200}
-                      animationDuration={600}
-                      animationEasing="ease-out"
-                    >
-                      {dataPizza.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend />
-                  </PieChart>
+                <PieChart>
+                  <Pie
+                    data={dataPizza}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={70}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                    label={({ name, value }) => `${name}: ${value}%`}
+                    isAnimationActive={true}
+                    animationBegin={200}
+                    animationDuration={600}
+                    animationEasing="ease-out"
+                  >
+                    {dataPizza.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend />
+                </PieChart>
               </ResponsiveContainer>
             </div>
           ) : (
@@ -252,8 +259,10 @@ export default function MainPage() {
               : "Ver gráfico de consumo"}
           </button>
         </div>
+        <button onClick={() => navigate("/CadastroGastos")}>
+          Cadastrar novo gasto
+        </button>
       </div>
-
     </section>
   );
 }

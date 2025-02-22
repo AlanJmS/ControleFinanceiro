@@ -48,7 +48,9 @@ function Gastos() {
               {editIndex === index ? (
                 <div
                   className="edit-card"
-                  style={{ backgroundColor: categoryColors[gasto.tipo] || "#ffffff" }}
+                  style={{
+                    backgroundColor: categoryColors[gasto.tipo] || "#ffffff",
+                  }}
                 >
                   <input
                     type="text"
@@ -77,10 +79,16 @@ function Gastos() {
                     <option value="Geral">Geral</option>
                   </select>
                   <div className="edit-buttons">
-                    <button onClick={() => handleSaveEdit(index)} className="save-btn">
+                    <button
+                      onClick={() => handleSaveEdit(index)}
+                      className="save-btn"
+                    >
                       Salvar
                     </button>
-                    <button onClick={() => setEditIndex(null)} className="cancel-btn">
+                    <button
+                      onClick={() => setEditIndex(null)}
+                      className="cancel-btn"
+                    >
                       Cancelar
                     </button>
                   </div>
@@ -104,7 +112,10 @@ function Gastos() {
       </div>
 
       {gastos.length > 0 && (
-        <button onClick={() => navigate("/Resume")} className="update-graphs-btn">
+        <button
+          onClick={() => navigate("/Resume")}
+          className="update-graphs-btn"
+        >
           Atualizar Gráficos
         </button>
       )}

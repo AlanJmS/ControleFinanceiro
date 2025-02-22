@@ -1,0 +1,102 @@
+#gastos-div {
+  display: flex;
+  color: var(--textColor);
+  padding-top: 1rem;
+  width: 100%;
+  height: 100%;
+}
+#img-gastos {
+  display: flex;
+  height: 100%;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & img {
+    width: 475px;
+    height: 500px;
+  }
+
+  & h3 {
+    padding-top: 2rem;
+    color: var(--textColor);
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  & h3 .gastosH3 {
+    color: var(--blue);
+  }
+}
+
+#form-gastos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  gap: 2rem;
+  & h2 {
+    text-align: center;
+  }
+  & form {
+    display: flex;
+    width: 65%;
+    height: 100%;
+    flex-direction: column;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    background-color: var(--secondaryColor);
+    border-radius: 0.8rem;
+    gap: 1.4rem;
+
+    & h2 {
+      padding-top: 0.5rem;
+    }
+
+    & label {
+      font-size: 1.5rem;
+    }
+
+    & input {
+      width: 100%;
+      height: 3.25rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1.5rem;
+      background-color: var(--primaryColor);
+      color: var(--textColor);
+    }
+
+    & select {
+      background-color: var(--primaryColor);
+      color: var(--textColor);
+      padding: 0.6rem;
+      width: 100%;
+    }
+  }
+
+  & button {
+    width: 100%;
+    height: 4rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--primaryColor);
+    color: var(--textColor);
+    font-size: 1.4rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.2s;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
