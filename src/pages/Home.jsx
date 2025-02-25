@@ -95,7 +95,7 @@ function HomePage() {
 
             <div className="form-group">
               <input
-                type="email"
+                type="text"
                 id="email"
                 placeholder="E-mail ou usuário"
                 required

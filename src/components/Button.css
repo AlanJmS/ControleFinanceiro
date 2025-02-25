@@ -25,3 +25,24 @@
 .green {
     background-color: var(--green);
 }
+
+.transparent, .transparent.trash {
+    background-color: transparent;
+    color: var(--primaryColor);
+    transition: all .3s ease;
+
+    &:hover {
+        background-color: transparent;
+        color: var(--green);
+    }
+
+    &.trash:hover {
+        color: red;
+    }
+}
+
+.second__hover {
+    &:hover {
+        background-color: var(--secondaryColor);
+    }
+}

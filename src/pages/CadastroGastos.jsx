@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useGastos } from "../context/GastosContext";
 import "./CadastroGastos.css";
+import Button from "../components/Button";
 
 function CadastroGastos() {
   const { adicionarGasto } = useGastos();
@@ -8,7 +9,7 @@ function CadastroGastos() {
   const [gasto, setGasto] = useState({
     nome: "",
     data: "",
-    tipo: "Alimentação",
+    tipo: "",
     valor: "",
   });
 
@@ -34,7 +35,7 @@ function CadastroGastos() {
     setGasto({
       nome: "",
       data: "",
-      tipo: "Alimentação",
+      tipo: "",
       valor: "",
     });
   };
@@ -72,7 +73,8 @@ function CadastroGastos() {
             />
 
             <label>Tipo do Gasto:</label>
-            <select name="tipo" value={gasto.tipo} onChange={handleChange}>
+            <select name="tipo"  defaultValue="default" onChange={handleChange}>
+              <option value="default" disabled >Selecionar</option>
               <option value="Alimentação">Alimentação</option>
               <option value="Transporte">Transporte</option>
               <option value="Saúde">Saúde</option>
@@ -89,7 +91,8 @@ function CadastroGastos() {
               required
             />
 
-            <button type="submit">Cadastrar Gasto</button>
+            {/* <button type="submit">Cadastrar Gasto</button> */}
+            <Button text="Cadastrar Gasto" type="submit" customClass="blue" />
           </form>
         </div>
       </div>

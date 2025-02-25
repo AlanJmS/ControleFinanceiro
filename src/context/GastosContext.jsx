@@ -32,6 +32,10 @@ export function GastosProvider({ children }) {
     });
   };
 
+  const deletarGasto = (index) => {
+    setGastos((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const limparGastos = () => {
     setGastos([]);
   };
@@ -45,6 +49,7 @@ export function GastosProvider({ children }) {
         adicionarGasto,
         editarGasto,
         limparGastos,
+        deletarGasto
       }}
     >
       {children}

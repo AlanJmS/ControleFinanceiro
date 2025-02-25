@@ -263,9 +263,6 @@ export default function MainPage() {
             onClick={() => navigate("/CadastroGastos")}
           />
         </div>
-        {/* <button onClick={() => navigate("/CadastroGastos")}>
-          Cadastrar novo gasto
-        </button> */}
       </div>
     </section>
   );

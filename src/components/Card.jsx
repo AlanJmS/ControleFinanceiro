@@ -1,4 +1,3 @@
-import { FaEdit, FaTrash } from 'react-icons/fa';
 import './Card.css';
 
 export default function Card({ text, value, span }) {
