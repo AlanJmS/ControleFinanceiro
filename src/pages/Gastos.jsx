@@ -10,9 +10,21 @@ function Gastos() {
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
   const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "", data: "2025-02-24" });
+  const [selected, setSelected] = useState([]);
 
   const handleDelete = (index) => {
-    deletarGasto(index);
+    deletarGasto([index]);
+  };
+
+  const handleDeleteSelected = () => {
+    deletarGasto(selected);
+    setSelected([]);
+  };
+
+  const handleCheckboxChange = (index) => {
+    setSelected((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
   const handleEditClick = (index) => {
@@ -57,15 +69,22 @@ function Gastos() {
         <table>
           <thead>
             <tr>
-              <th style={{width: "35%"}}>Gasto</th>
-              <th style={{width: "25%"}}>Data</th>
-              <th style={{width: "20%"}}>Categoria</th>
-              <th style={{width: "20%"}}>Valor</th>
+              <th style={{ width: "30%" }}>Gasto</th>
+              <th style={{ width: "25%" }}>Data</th>
+              <th style={{ width: "20%" }}>Categoria</th>
+              <th style={{ width: "20%" }}>Valor</th>
               <th colSpan={2}>Editar</th>
             </tr>
           </thead>
 
           <tbody>
+            <tr>
+              <td colSpan={6}></td>
+              <td colSpan={2} style={{ textAlign: "right" }}>
+                <FaTrash className="table__button trash" onClick={handleDeleteSelected} />
+              </td>
+            </tr>
+
             {gastos.length === 0 ? (
               <tr>
                 <td colSpan={5}>Nenhum gasto cadastrado.</td>
@@ -130,13 +149,21 @@ function Gastos() {
                     <>
                       <td>{gasto.nome}</td>
                       <td>{formateDate(gasto.data)}</td>
-                      <td style={{color: categoryColors[gasto.tipo] || "var(--textColor)"}}>{gasto.tipo}</td>
+                      <td style={{ color: categoryColors[gasto.tipo] || "var(--textColor)" }}>{gasto.tipo}</td>
                       <td>{`R$ ${gasto.valor}`}</td>
                       <td>
                         <FaEdit className="table__button" onClick={() => handleEditClick(index)} />
                       </td>
                       <td>
                         <FaTrash className="table__button trash" onClick={() => handleDelete(index)} />
+                      </td>
+                      <td>
+                        <input
+                        style={{cursor: "pointer"}}
+                          type="checkbox"
+                          checked={selected.includes(index)}
+                          onChange={() => handleCheckboxChange(index)}
+                        />
                       </td>
                     </>
                   )}
@@ -146,7 +173,7 @@ function Gastos() {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 }
 

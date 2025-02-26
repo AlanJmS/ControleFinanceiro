@@ -33,7 +33,7 @@ export function GastosProvider({ children }) {
   };
 
   const deletarGasto = (index) => {
-    setGastos((prev) => prev.filter((_, i) => i !== index));
+    setGastos((prev) => prev.filter((_, i) => !index.includes(i)));
   };
 
   const limparGastos = () => {

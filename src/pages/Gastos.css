@@ -51,8 +51,9 @@
 
       & thead {
         position: sticky;
-        border-bottom: .1rem solid var(--textColor);
-        box-shadow: 0 1px 0 var(--textColor);
+        top: -1.5rem;
+        box-shadow: inset 0 -.1rem 0 var(--textColor);
+        background-color: var(--secondaryColor);
         
         & tr th {
           font-size: 1.4rem;
@@ -63,8 +64,12 @@
 
       & tr td {
         font-size: 1.2rem;
-        text-align: center;
+        
         padding: .5rem 0;
+
+        &:nth-child(2) {
+          text-align: center;
+        }
 
         & input:not([type="button"]),
         select {
@@ -109,9 +114,4 @@
       }
     }
   }
-}
-
-a {
-  
-color: rgb(0, 153, 255);
 }
