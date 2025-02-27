@@ -64,11 +64,11 @@
 
       & tr td {
         font-size: 1.2rem;
-        
+        text-align: center;
         padding: .5rem 0;
 
-        &:nth-child(2) {
-          text-align: center;
+        &:nth-child(1) {
+          text-align: left;
         }
 
         & input:not([type="button"]),
