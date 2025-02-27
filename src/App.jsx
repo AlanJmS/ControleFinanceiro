@@ -9,13 +9,13 @@ import Navbar from "./components/NavBar";
 import Container from "./components/Container";
 import HomePage from "./pages/Home";
 import MainPage from "./pages/MainPage";
-import ResumePage from "./pages/ResumePage";
 import Gastos from "./pages/Gastos";
 import CadastroGastos from "./pages/CadastroGastos";
 import Footer from "./components/Footer";
 import { GastosProvider } from "../src/context/GastosContext";
 import "./App.css";
 import Metas from "./pages/Metas";
+import Perfil from "./pages/Perfil";
 
 function Layout() {
   const location = useLocation();
@@ -28,8 +28,8 @@ function Layout() {
         <Routes>
           <Route path="/" element={<Navigate to="/HomePage" />} />
           <Route path="/HomePage" element={<HomePage />} />
+          <Route path="/Perfil" element={<Perfil/>}/>
           <Route path="/MainPage" element={<MainPage />} />
-          <Route path="/Resume" element={<ResumePage />} />
           <Route path="/Gastos" element={<Gastos />} />
           <Route path="/CadastroGastos" element={<CadastroGastos />} />{" "}
           <Route path="/Metas" element={<Metas />} />

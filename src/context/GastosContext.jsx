@@ -2,54 +2,85 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const GastosContext = createContext();
 
-export function GastosProvider({ children }) {
-  const [gastos, setGastos] = useState(() => {
-    const saved = localStorage.getItem("gastos");
-    return saved ? JSON.parse(saved) : [];
-  });
+const loadInitialState = (key, defaultValue) => {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : defaultValue;
+  } catch (error) {
+    console.error(`Error loading ${key} from localStorage:`, error);
+    return defaultValue;
+  }
+};
 
-  const [salario, setSalario] = useState(
-    localStorage.getItem("salario") || ""
-  );
+export function GastosProvider({ children }) {
+  const [gastos, setGastos] = useState(() => loadInitialState("gastos", []));
+
+  const [salario, setSalario] = useState(() => {
+    const defaultSalario = { base: 0, rendasExtras: [] };
+    const loaded = loadInitialState("salario", defaultSalario);
+
+    return {
+      base: Number(loaded.base) || 0,
+      rendasExtras: Array.isArray(loaded.rendasExtras)
+        ? loaded.rendasExtras.map((renda) => ({
+            descricao: renda.descricao || "",
+            valor: Number(renda.valor) || 0,
+          }))
+        : [],
+    };
+  });
 
   useEffect(() => {
     localStorage.setItem("gastos", JSON.stringify(gastos));
   }, [gastos]);
 
   useEffect(() => {
-    localStorage.setItem("salario", salario);
+    localStorage.setItem("salario", JSON.stringify(salario));
   }, [salario]);
 
-  const adicionarGasto = (gasto) => {
-    setGastos((prev) => [...prev, gasto]);
-  };
-
-  const editarGasto = (index, novoGasto) => {
-    setGastos((prev) => {
-      const updated = [...prev];
-      updated[index] = novoGasto;
-      return updated;
-    });
-  };
-
-  const deletarGasto = (index) => {
-    setGastos((prev) => prev.filter((_, i) => !index.includes(i)));
-  };
-
-  const limparGastos = () => {
-    setGastos([]);
-  };
+  const orcamentoTotal =
+    salario.base +
+    (salario.rendasExtras?.reduce((acc, renda) => acc + renda.valor, 0) || 0);
 
   return (
     <GastosContext.Provider
       value={{
         gastos,
         salario,
-        setSalario,
-        adicionarGasto,
-        editarGasto,
-        limparGastos,
-        deletarGasto
+        orcamentoTotal,
+        deletarGasto: (indexes) =>
+          setGastos((prev) => prev.filter((_, i) => !indexes.includes(i))),
+        setSalario: (novoSalario) =>
+          setSalario((prev) => ({
+            base: Number(novoSalario.base) || prev.base,
+            rendasExtras: Array.isArray(novoSalario.rendasExtras)
+              ? novoSalario.rendasExtras.map((renda) => ({
+                  descricao: renda.descricao || "",
+                  valor: Number(renda.valor) || 0,
+                }))
+              : prev.rendasExtras,
+          })),
+        adicionarGasto: (gasto) =>
+          setGastos((prev) => [
+            ...prev,
+            {
+              ...gasto,
+              valor: Number(gasto.valor) || 0,
+              data: new Date(gasto.data).toISOString(),
+            },
+          ]),
+        editarGasto: (index, novoGasto) =>
+          setGastos((prev) =>
+            prev.map((g, i) =>
+              i === index
+                ? {
+                    ...novoGasto,
+                    valor: Number(novoGasto.valor) || 0,
+                    data: new Date(novoGasto.data).toISOString(),
+                  }
+                : g
+            )
+          ),
       }}
     >
       {children}
@@ -57,6 +88,7 @@ export function GastosProvider({ children }) {
   );
 }
 
-export function useGastos() {
-  return useContext(GastosContext);
-}
+export const useGastos = () => {
+  const context = useContext(GastosContext);
+  return context;
+};

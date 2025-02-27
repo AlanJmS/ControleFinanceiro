@@ -54,8 +54,8 @@ function CadastroGastos() {
           <form onSubmit={handleSubmit}>
             <h2>Cadastre os seus gastos!</h2>
 
-            <label>Nome do Gasto:</label>
             <input
+            placeholder="Descrição"
               type="text"
               name="nome"
               value={gasto.nome}
@@ -63,7 +63,6 @@ function CadastroGastos() {
               required
             />
 
-            <label>Data do Gasto:</label>
             <input
               type="date"
               name="data"
@@ -82,8 +81,8 @@ function CadastroGastos() {
               <option value="Geral">Geral</option>
             </select>
 
-            <label>Valor do Gasto:</label>
             <input
+            placeholder="Valor"
               type="number"
               name="valor"
               value={gasto.valor}
@@ -91,7 +90,6 @@ function CadastroGastos() {
               required
             />
 
-            {/* <button type="submit">Cadastrar Gasto</button> */}
             <Button text="Cadastrar Gasto" type="submit" customClass="blue" />
           </form>
         </div>

@@ -26,9 +26,6 @@ function Navbar() {
         <NavLink to="/Gastos" onClick={handleActiveLink} className={active === "MainPage" ? "active" : ""}>
           Gastos
         </NavLink>
-        <NavLink to="/Resume" onClick={handleActiveLink} className={active === "Resume" ? "active" : ""}>
-          Resumo
-        </NavLink>
         <NavLink to="/Metas" onClick={handleActiveLink} className={active === "Metas" ? "active" : ""}>
           Metas
         </NavLink>
@@ -40,8 +37,8 @@ function Navbar() {
         <FaAngleDown onClick={handleMenuStats} />
         {menuOpen ? (
           <div id="user__menu">
-            <NavLink to="/Conta">Conta</NavLink>
-            <NavLink to="/Home">Mudar conta</NavLink>
+            <NavLink to="/Perfil">Conta</NavLink>
+            <NavLink to="/">Mudar conta</NavLink>
           </div>
         ) : ""}
       </div>

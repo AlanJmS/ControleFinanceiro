@@ -13,18 +13,15 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  AreaChart,
 } from "recharts";
 import "./MainPage.css";
-import CadastroGastos from "./CadastroGastos";
 import Card from "../components/Card";
 import Button from "../components/Button";
 
 export default function MainPage() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("nome");
-  const { gastos, salario } = useGastos();
-  const salarioNumero = parseFloat(salario) || 0;
+  const { gastos, salario, orcamentoTotal } = useGastos(); // Usando orcamentoTotal do contexto
 
   const [mostrarGraficoPizza, setMostrarGraficoPizza] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -34,6 +31,7 @@ export default function MainPage() {
     setSelectedMonth(null);
   };
 
+  // Agrupa gastos por categoria
   const categorias = gastos.reduce((acc, gasto) => {
     const valor = parseFloat(gasto.valor) || 0;
     const categoria = gasto.tipo || "Outros";
@@ -41,24 +39,27 @@ export default function MainPage() {
     return acc;
   }, {});
 
+  // Prepara os dados para o gráfico de pizza
   const dataPizza = Object.entries(categorias).map(([categoria, total]) => ({
     name: categoria,
-    value: parseFloat(((total / salarioNumero) * 100).toFixed(2)),
+    value: parseFloat(((total / orcamentoTotal) * 100).toFixed(2)),
     total: total.toFixed(2),
   }));
 
+  // Calcula o total de gastos
   const totalGastos = Object.values(categorias).reduce((a, b) => a + b, 0);
-  const salarioRestante = salarioNumero - totalGastos;
+  const salarioRestante = orcamentoTotal - totalGastos;
 
+  // Adiciona o salário restante ao gráfico de pizza
   if (salarioRestante > 0) {
     dataPizza.push({
       name: "Salário Restante",
-      value: parseFloat(((salarioRestante / salarioNumero) * 100).toFixed(2)),
+      value: parseFloat(((salarioRestante / orcamentoTotal) * 100).toFixed(2)),
       total: salarioRestante.toFixed(2),
     });
   }
 
-  // Agrupando gastos por mês para o gráfico de linhas (visão mensal)
+  // Agrupa gastos por mês para o gráfico de linhas
   const gastosPorMes = gastos.reduce((acc, gasto) => {
     const data = new Date(gasto.data);
     const mesAno = `${data.getMonth() + 1}/${data.getFullYear()}`;
@@ -75,10 +76,9 @@ export default function MainPage() {
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
 
-  // Tooltip customizado que adapta o conteúdo conforme o tipo de gráfico
+  // Tooltip customizado
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
-      // Se for o gráfico de pizza (exibe o nome e o total)
       if (payload[0].payload.name) {
         return (
           <div className="custom-tooltip">
@@ -99,15 +99,7 @@ export default function MainPage() {
     return null;
   };
 
-  // if (gastos.length === 0 || salarioNumero <= 0) {
-  //   return (
-  //     <div className="chart__container">
-  //       <h1>Distribuição de Gastos em Relação ao Salário</h1>
-  //       <p>Não há dados suficientes para exibir os gráficos.</p>
-  //     </div>
-  //   );
-  // }
-
+  // Dados para o gráfico de linhas (visão mensal ou diária)
   let dataChart = dataLinha;
   let xAxisDataKey = "mes";
   let tickFormatter = (mesAno) => {
@@ -137,27 +129,7 @@ export default function MainPage() {
     tickFormatter = (dia) => `Dia ${dia}`;
   }
 
-  const CustomMonthlyTick = (props) => {
-    const { x, y, payload } = props;
-    return (
-      <text
-        x={x}
-        y={y + 10}
-        fill="#f0f0f0"
-        textAnchor="middle"
-        style={{ cursor: "pointer" }}
-        onClick={() => setSelectedMonth(payload.value)}
-      >
-        {new Date(0, Number(payload.value.split("/")[0]) - 1).toLocaleString(
-          "pt-BR",
-          {
-            month: "short",
-          }
-        )}
-      </text>
-    );
-  };
-
+  // Título do gráfico
   let tituloGrafico = "Gastos Totais por Mês";
   if (selectedMonth) {
     const [mes, ano] = selectedMonth.split("/");
@@ -174,14 +146,12 @@ export default function MainPage() {
         <Card
           text="👋 Olá, "
           span={`${userName}!`}
-          value={`R$ ${dataPizza[0].total}`}
+          value={`R$ ${orcamentoTotal.toFixed(2)}`} // Exibe o orçamento total
         />
-        <Card text="Outros valores" value="R$ 0,00" />
+        <Card text="Total Gastos" value={`R$ ${totalGastos.toFixed(2)}`} />
       </div>
 
       <div id="chart__container">
-        <h2>Resumo de Gastos</h2>
-
 
         {mostrarGraficoPizza ? (
           <div className="chart__">
@@ -198,10 +168,6 @@ export default function MainPage() {
                   paddingAngle={5}
                   dataKey="value"
                   label={({ name, value }) => `${name}: ${value}%`}
-                  isAnimationActive={true}
-                  animationBegin={200}
-                  animationDuration={600}
-                  animationEasing="ease-out"
                 >
                   {dataPizza.map((entry, index) => (
                     <Cell
@@ -219,10 +185,7 @@ export default function MainPage() {
           <div className="chart__">
             <h2>{tituloGrafico}</h2>
             {selectedMonth && (
-              <button
-                onClick={() => setSelectedMonth(null)}
-                className="back-btn"
-              >
+              <button onClick={() => setSelectedMonth(null)} className="back-btn">
                 Voltar à visão mensal
               </button>
             )}
@@ -233,8 +196,6 @@ export default function MainPage() {
                   dataKey={xAxisDataKey}
                   stroke="#f0f0f0"
                   tickFormatter={tickFormatter}
-                  {...(!selectedMonth ? { tick: <CustomMonthlyTick /> } : {})}
-                  interval={0}
                 />
                 <YAxis stroke="#f0f0f0" />
                 <Tooltip content={<CustomTooltip />} />
@@ -243,10 +204,6 @@ export default function MainPage() {
                   dataKey="valor"
                   stroke="#007AFF"
                   name="Valor total"
-                  isAnimationActive={true}
-                  animationBegin={200}
-                  animationDuration={600}
-                  animationEasing="ease-out"
                 />
               </LineChart>
             </ResponsiveContainer>
