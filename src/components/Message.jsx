@@ -13,11 +13,15 @@ export default function Message({ text, type }) {
 
         const timer = setTimeout(() => {
             setVisible(false);
-        }, 4000);
+        }, 3000);
         return () => clearTimeout(timer);
     }, [text]);
 
     return (
-        <div className={`${styles.message} ${styles[type]}`}>{text}</div>
+        <>
+            {visible && (
+                <div className={`${styles.message} ${styles[type]}`}>{text}</div>
+            )}
+        </>
     );
 };

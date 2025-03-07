@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGastos } from "../context/GastosContext";
 import "./Gastos.css";
 import { FaEdit, FaSave, FaTrash, FaWindowClose } from 'react-icons/fa';
 import Button from "../components/Button";
+import Message from "../components/Message";
 
 function Gastos() {
   const { gastos, editarGasto, deletarGasto } = useGastos();
@@ -11,14 +12,23 @@ function Gastos() {
   const [editIndex, setEditIndex] = useState(null);
   const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "", data: "2025-02-24" });
   const [selected, setSelected] = useState([]);
+  const [projectMessage, setProjectMessage] = useState("");
+
+  const location = useLocation();
+  let message = "";
+  if (location.state) {
+    message = location.state.message;
+  };
 
   const handleDelete = (index) => {
     deletarGasto([index]);
+    setProjectMessage("Gasto deletado com sucesso!");
   };
 
   const handleDeleteSelected = () => {
     deletarGasto(selected);
     setSelected([]);
+    setProjectMessage("Gastos deletados com sucesso!");
   };
 
   const handleCheckboxChange = (index) => {
@@ -35,6 +45,7 @@ function Gastos() {
   const handleSaveEdit = (index) => {
     editarGasto(index, editGasto);
     setEditIndex(null);
+    setProjectMessage("Gasto editado com sucesso!");
   };
 
   const handleChange = (e) => {
@@ -51,8 +62,12 @@ function Gastos() {
   };
 
   const formateDate = (dateString) => {
-    const [year, month, day] = dateString.split("-");
-    return `${day}-${month}-${year}`;
+    // data formatada sem timezone
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -65,6 +80,8 @@ function Gastos() {
           onClick={() => navigate("/CadastroGastos")}
         />
       </div>
+      {message && <Message type="success" text={message} />}
+      {projectMessage && <Message type="success" text={projectMessage} />}
       <div className="table__container">
         <table>
           <thead>
@@ -159,7 +176,7 @@ function Gastos() {
                       </td>
                       <td>
                         <input
-                        style={{cursor: "pointer"}}
+                          style={{ cursor: "pointer" }}
                           type="checkbox"
                           checked={selected.includes(index)}
                           onChange={() => handleCheckboxChange(index)}

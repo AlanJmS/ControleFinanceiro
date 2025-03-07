@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useGastos } from "../context/GastosContext";
 import "./CadastroGastos.css";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function CadastroGastos() {
   const { adicionarGasto } = useGastos();
+  const navigate = useNavigate();
 
   const [gasto, setGasto] = useState({
     nome: "",
@@ -31,6 +33,7 @@ function CadastroGastos() {
     };
 
     adicionarGasto(novoGasto);
+    navigate("/gastos", { state: { message: "Gasto adicionado com sucesso!" } });
 
     setGasto({
       nome: "",
