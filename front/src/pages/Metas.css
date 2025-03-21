@@ -1,0 +1,178 @@
+.container-metas {
+    width: 80%;
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--textColor);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  
+    & h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      color: var(--primaryColor);
+      margin-bottom: 1rem;
+    }
+  
+    & .metas-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: start;
+      height: 100%;
+    }
+  
+    & .coluna-info-form {
+      background-color: var(--secondaryColor);
+      padding: 2rem;
+      border-radius: 0.8rem;
+      box-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
+  
+      & p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+  
+        & strong {
+          color: var(--primaryColor);
+        }
+      }
+    }
+  
+    & .form-metas {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+  
+      & label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-weight: 500;
+  
+        & textarea, input {
+          background-color: var(--primaryColor);
+          border: 1px solid var(--borderColor);
+          padding: 0.8rem;
+          border-radius: 0.4rem;
+          color: var(--textColor);
+  
+          &:focus {
+            outline: 2px solid var(--primaryColor);
+          }
+        }
+      }
+  
+      & button[type="submit"] {
+        background-color: var(--primaryColor);
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 0.4rem;
+        cursor: pointer;
+        transition: filter 0.3s;
+  
+        &:hover {
+          filter: brightness(1.1);
+        }
+      }
+    }
+  
+    & .lista-metas {
+      background-color: var(--secondaryColor);
+      padding: 2rem;
+      border-radius: 0.8rem;
+      height: 100%;
+      box-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
+  
+      & h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--primaryColor);
+      }
+  
+      & ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-height: 60vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+  
+        & li {
+          background-color: var(--backgroundColor);
+          padding: 1.5rem;
+          border-radius: 0.4rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          border-left: 4px solid;
+  
+          &.pendente {
+            border-color: var(--statusPending);
+          }
+  
+          &.concluida {
+            border-color: var(--statusCompleted);
+          }
+  
+          & .meta-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+  
+            & strong {
+              font-size: 1.1rem;
+            }
+  
+            & span:nth-child(3) {
+              font-size: 0.9rem;
+              font-weight: bold;
+  
+              &::before {
+                content: "Status: ";
+                font-weight: normal;
+              }
+            }
+          }
+  
+          & button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+  
+            &:first-of-type {
+              background-color: var(--primaryColor);
+              color: white;
+  
+              &:hover {
+                opacity: 0.9;
+              }
+            }
+  
+            &:last-of-type {
+              background-color: var(--errorColor);
+              color: white;
+  
+              &:hover {
+                opacity: 0.9;
+              }
+            }
+          }
+        }
+      }
+  
+      & p {
+        text-align: center;
+        color: var(--textSecondary);
+      }
+    }
+  }
+  

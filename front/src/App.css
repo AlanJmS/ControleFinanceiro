@@ -14,6 +14,11 @@
   --blue: #007AFF;
   --green: #14AE5C;
   --yellow: #E6B800;
+  --statusPending: #ffa726;
+  --statusCompleted: #66bb6a;
+  --errorColor: #ef5350;
+  --textSecondary: #a0a0a0;
+
 }
 
 html,

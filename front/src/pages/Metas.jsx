@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useGastos } from "../context/GastosContext";
 import "./Metas.css";
 
 function Metas() {
-  const [salario, setSalario] = useState(0);
+  const { orcamentoTotal } = useGastos();
   const [metas, setMetas] = useState([]);
   const [novaMeta, setNovaMeta] = useState({ descricao: "", valor: "" });
-
-  useEffect(() => {
-    const salarioSalvo = localStorage.getItem("salario");
-    if (salarioSalvo) {
-      setSalario(parseFloat(salarioSalvo));
-    }
-  }, []);
 
   const handleChange = (e) => {
     setNovaMeta({ ...novaMeta, [e.target.name]: e.target.value });
@@ -45,10 +39,9 @@ function Metas() {
     <div className="container-metas">
       <h1>Metas Financeiras</h1>
       <div className="metas-grid">
-        {/* Coluna 1: Informações e Formulário */}
         <div className="coluna-info-form">
           <p>
-            Seu salário atual: <strong>R$ {salario.toFixed(2)}</strong>
+            Seu orçamento total: <strong>R$ {orcamentoTotal.toFixed(2)}</strong>
           </p>
           <form className="form-metas" onSubmit={handleSubmit}>
             <label>
@@ -74,7 +67,6 @@ function Metas() {
           </form>
         </div>
 
-        {/* Coluna 2: Lista de Metas */}
         <div className="lista-metas">
           <h2>Lista de Metas</h2>
           {metas.length > 0 ? (
@@ -82,14 +74,12 @@ function Metas() {
               {metas.map((meta, index) => (
                 <li
                   key={index}
-                  className={
-                    meta.status === "Concluída" ? "concluida" : "pendente"
-                  }
+                  className={meta.status === "Concluída" ? "concluida" : "pendente"}
                 >
                   <div className="meta-info">
                     <strong>{meta.descricao}</strong>
                     <span>R$ {meta.valor.toFixed(2)}</span>
-                    <span>Status: {meta.status}</span>
+                    <span> {meta.status}</span>
                   </div>
                   <button onClick={() => handleToggleStatus(index)}>
                     {meta.status === "Pendente" ? "Concluir" : "Reabrir"}
