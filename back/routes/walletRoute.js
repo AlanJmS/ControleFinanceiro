@@ -9,6 +9,9 @@ router.get("/", walletController.getAllWallets);
 // Cria uma nova carteira
 router.post("/", walletController.createWallet);
 
+// Adiciona um usuário a uma carteira
+router.post("/:walletId/addUser", walletController.addUserToWallet);
+
 // Edita uma carteira
 router.put("/:id", walletController.editWallet);
 
