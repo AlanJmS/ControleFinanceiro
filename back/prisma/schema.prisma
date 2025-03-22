@@ -18,23 +18,23 @@ model User {
   name     String
   email    String       @unique
   password String
-  wallets  UserWallet[]
+  wallets  UserWallet[] @relation("UserToWallets")
+  costs    Cost[]       @relation("UserToCosts")
 }
 
 model Wallet {
-  id      Int    @id @default(autoincrement())
-  name    String
-  balance Float
-
-  costs       Cost[]
-  usersWallet UserWallet[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  balance     Float
+  costs       Cost[]       @relation("WalletToCosts")
+  usersWallet UserWallet[] @relation("WalletToUsers")
 }
 
 model UserWallet {
   userId   Int
   walletId Int
-  user     User   @relation(fields: [userId], references: [id])
-  wallet   Wallet @relation(fields: [walletId], references: [id])
+  user     User   @relation("UserToWallets", fields: [userId], references: [id], onDelete: Cascade)
+  wallet   Wallet @relation("WalletToUsers", fields: [walletId], references: [id], onDelete: Cascade)
 
   @@id([userId, walletId])
 }
@@ -44,6 +44,8 @@ model Cost {
   name     String
   amount   Float
   date     DateTime
-  wallet   Wallet   @relation(fields: [walletId], references: [id])
+  wallet   Wallet   @relation("WalletToCosts", fields: [walletId], references: [id], onDelete: Cascade)
   walletId Int
+  user     User     @relation("UserToCosts", fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
 }
