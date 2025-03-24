@@ -73,7 +73,7 @@ export const createWallet = async (req, res) => {
         const wallet = await prisma.wallet.create({
             data: {
                 name,
-                balance,
+                balance: balance || 0,
                 usersWallet: {
                     create: usersWalletData
                 }
@@ -222,9 +222,10 @@ export const deleteWallet = async (req, res) => {
             where: { id: Number(id) }
         });
 
-        return res.status(200).json({ message: "Carteira deletada com sucesso" });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Erro ao deletar carteira" });
-    }
+    console.log("Carteira deletada com sucesso");
+    res.status(200).json({ message: "Carteira deletada com sucesso" });
+  } catch (error) {
+    console.error("Erro ao deletar carteira:", error);
+    res.status(500).json({ message: "Erro ao deletar carteira" });
+  }
 };

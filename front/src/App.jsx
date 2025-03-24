@@ -16,6 +16,7 @@ import { GastosProvider } from "../src/context/GastosContext";
 import "./App.css";
 import Metas from "./pages/Metas";
 import Perfil from "./pages/Perfil";
+import Carteiras from './pages/Carteiras'
 
 function Layout() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function Layout() {
           <Route path="/Perfil" element={<Perfil/>}/>
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/Gastos" element={<Gastos />} />
+          <Route path="/Carteiras" element={<Carteiras/>}/>
           <Route path="/CadastroGastos" element={<CadastroGastos />} />{" "}
           <Route path="/Metas" element={<Metas />} />
         </Routes>
