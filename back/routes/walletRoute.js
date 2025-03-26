@@ -6,6 +6,9 @@ const router = express.Router();
 // GET /wallets
 router.get("/", walletController.getAllWallets);
 
+// GET /wallets/:id
+router.get("/:id", walletController.getWallet);
+
 // Cria uma nova carteira
 router.post("/", walletController.createWallet);
 

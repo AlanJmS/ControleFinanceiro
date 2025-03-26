@@ -23,6 +23,31 @@ export const getAllWallets = async (req, res) => {
     }
 };
 
+// 🔹 Buscar uma carteira específica
+export const getWallet = async (req, res) => {
+    const user = req.user;
+    const { id } = req.params;
+
+    try {
+        const wallet = await prisma.wallet.findFirst({
+            where: {
+                id: Number(id),
+                usersWallet: { some: { userId: user.id } }
+            },
+            include: {
+                usersWallet: { include: { user: true } }
+            }
+        });
+        if (!wallet) {
+            return res.status(404).json({ message: "Carteira não encontrada" });
+        }
+        return res.status(200).json(wallet);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Erro ao buscar carteira" });
+    }
+};
+
 // 🔹 Criar uma carteira associada ao usuário do header e opcionalmente a outros usuários (por email)
 export const createWallet = async (req, res) => {
     const user = req.user;
@@ -220,10 +245,10 @@ export const deleteWallet = async (req, res) => {
             where: { id: Number(id) }
         });
 
-    console.log("Carteira deletada com sucesso");
-    res.status(200).json({ message: "Carteira deletada com sucesso" });
-  } catch (error) {
-    console.error("Erro ao deletar carteira:", error);
-    res.status(500).json({ message: "Erro ao deletar carteira" });
-  }
+        console.log("Carteira deletada com sucesso");
+        res.status(200).json({ message: "Carteira deletada com sucesso" });
+    } catch (error) {
+        console.error("Erro ao deletar carteira:", error);
+        res.status(500).json({ message: "Erro ao deletar carteira" });
+    }
 };

@@ -35,6 +35,11 @@ export const getWallets = async () => {
     return response;
 };
 
+export const getWallet = async (walletId) => {
+    const response = await api.get(`/wallets/${walletId}`, authHeader());
+    return response;
+}
+
 export const addToWallet = async (walletId, userId) => {
     const response = await api.post(`/wallets/${walletId}/addUser`, { userId }, authHeader());
     return response;
