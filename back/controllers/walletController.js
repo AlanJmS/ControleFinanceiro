@@ -213,10 +213,8 @@ export const deleteWallet = async (req, res) => {
 
         if (!wallet) return res.status(403).json({ message: "Acesso negado ou carteira não encontrada" });
 
-        // Impedir a exclusão se houver múltiplos usuários vinculados
-        if (wallet.usersWallet.length > 1) {
-            return res.status(400).json({ message: "Carteira compartilhada não pode ser deletada diretamente" });
-        }
+        // Só permitir a exclusão se for o criador da carteira
+        if (wallet.usersWallet[0].userId !== user.id) return res.status(403).json({ message: "Somente o criador da carteira pode apagar." });
 
         await prisma.wallet.delete({
             where: { id: Number(id) }
