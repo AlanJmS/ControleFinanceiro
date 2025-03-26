@@ -18,6 +18,7 @@ model User {
   name     String
   email    String       @unique
   password String
+  salary   Float @default(0)
   wallets  UserWallet[] @relation("UserToWallets")
   costs    Cost[]       @relation("UserToCosts")
 }
@@ -48,4 +49,13 @@ model Cost {
   walletId Int
   user     User     @relation("UserToCosts", fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
+  category EnumCategory
+}
+
+enum EnumCategory {
+  Geral
+  Alimentação
+  Saúde
+  Entretenimento
+  Transporte
 }
