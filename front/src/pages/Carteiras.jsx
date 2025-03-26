@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Carteiras.css";
 import { FaPencilAlt, FaTrashAlt, FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
+import { createWallet, deleteWallet, editWallet, getWallets } from "../api/api";
 
 export default function Carteiras() {
   const navigate = useNavigate();
@@ -13,25 +14,20 @@ export default function Carteiras() {
   const [participantes, setParticipantes] = useState([]);
   const [editandoParticipante, setEditandoParticipante] = useState(null);
 
-  
+
   const fetchCarteiras = async () => {
     try {
-      const token = localStorage.getItem("token"); 
-      const response = await axios.get("http://localhost:3000/wallets", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setCarteiras(response.data);
+      const response = await getWallets();
+      const allWallets = response.data.map(wallet => ({
+        ...wallet,
+        editando: false
+      })) ;
+      setCarteiras(allWallets);
     } catch (error) {
       console.error("Erro ao buscar carteiras:", error);
-      alert("Erro ao carregar carteiras. Tente novamente.");
+      alert("Erro ao buscar carteiras. Por favor, tente novamente.");
     }
   };
-
-  useEffect(() => {
-    fetchCarteiras();
-  }, []);
 
   const handleEditar = (id) => {
     setCarteiras((prevCarteiras) =>
@@ -43,22 +39,16 @@ export default function Carteiras() {
 
   const handleSalvar = async (id, novoNome) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `http://localhost:3000/wallets/${id}`,
-        { name: novoNome },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await editWallet(id, { name: novoNome });
 
-      setCarteiras((prevCarteiras) =>
-        prevCarteiras.map((carteira) =>
-          carteira.id === id ? { ...carteira, name: response.data.name, editando: false } : carteira
-        )
-      );
+      setCarteiras((prevCarteiras) => {
+        return prevCarteiras.map((carteira) =>
+          carteira.id === id
+            ? { ...carteira, name: novoNome, editando: false }
+            : carteira
+        );
+      });
+      
     } catch (error) {
       console.error("Erro ao salvar alterações:", error.response?.data || error);
       alert(error.response?.data?.message || "Erro ao salvar alterações. Tente novamente.");
@@ -67,16 +57,12 @@ export default function Carteiras() {
 
   const handleApagar = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(`http://localhost:3000/wallets/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await deleteWallet(id);
 
       setCarteiras((prevCarteiras) =>
         prevCarteiras.filter((carteira) => carteira.id !== id)
       );
+      alert("Carteira apagada com sucesso!");
     } catch (error) {
       console.error("Erro ao apagar carteira:", error.response?.data || error);
       alert(error.response?.data?.message || "Erro ao apagar carteira. Tente novamente.");
@@ -85,22 +71,18 @@ export default function Carteiras() {
 
   const handleCriarCarteira = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:3000/wallets",
-        {
-          name: novaCarteira.nome,
-          balance: 0,
-          userEmails: participantes,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await createWallet({
+        name: novaCarteira.nome,
+        balance: 0,
+        users: participantes.map((participante) => ({ name: participante })),
+      });
 
-      setCarteiras((prevCarteiras) => [...prevCarteiras, response.data]);
+      const newWallet = {
+        ...response.data,
+        editando: false
+      };
+
+      setCarteiras((prevCarteiras) => [...prevCarteiras, newWallet]);
       setShowModal(false);
       setNovaCarteira({ nome: "", participantes: "" });
       setParticipantes([]);
@@ -125,6 +107,10 @@ export default function Carteiras() {
       prevParticipantes.filter((_, i) => i !== index)
     );
   };
+
+  useEffect(() => {
+    fetchCarteiras();
+  }, []);
 
   return (
     <section id="section-carteiras">
