@@ -1,19 +1,96 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import * as api from "../api/api";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Home.css";
 import Button from "../components/Button";
+import Message from "../components/Message";
 
 function HomePage() {
   const navigate = useNavigate();
-  const [nome, setNome] = useState(localStorage.getItem("nome") || "");
-  const [salario, setSalario] = useState(localStorage.getItem("salario") || "");
+  const [formData, setFormData] = useState(
+    {
+      name: "",
+      email: "",
+      password: "",
+      salary: ""
+    }
+  );
   const [form, setForm] = useState("login");
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+  const [messageToUser, setMessageToUser] = useState({
+    message: "",
+    type: ""
+  });
 
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    localStorage.setItem("nome", nome);
-    localStorage.setItem("salario", salario);
-    navigate("/MainPage");
+
+    setMessageToUser({
+      message: "",
+      type: ""
+    });
+
+    if (formData.senha !== formData.confirmarSenha) {
+      setMessageToUser({
+        message: "As senhas não coincidem.",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      console.log(formData);
+      const response = await api.registerUser(formData);
+      console.log(response);
+      if (response.status === 201) {
+        setMessageToUser({
+          message: "Usuário registrado com sucesso!",
+          type: "success",
+        });
+        // setForm("login");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Erro ao registrar usuário:", error);
+      setMessageToUser({
+        message: error.response.data.message,
+        type: "error",
+      });
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    setMessageToUser({
+      message: "",
+      type: ""
+    });
+
+    try {
+      console.log(loginData);
+      const response = await api.loginUser(loginData);
+      console.log(response);
+      if (response.status === 200) {
+        setMessageToUser({
+          message: "Entrando...",
+          type: "success",
+        });
+        setTimeout(() => {
+          localStorage.setItem("token", response.data.token);
+          navigate("/MainPage");
+        }, 3000);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setMessageToUser({
+        message: error.response.data.message,
+        type: "error",
+      });
+    }
   };
 
   const changeForm = () => {
@@ -29,16 +106,18 @@ function HomePage() {
       <div id="div-esq"></div>
       <div id="div-form">
         {form === "cadastro" ? (
-          <form onSubmit={handleSubmit} className="formulario">
+          <form onSubmit={handleRegister} className="formulario">
             <h2>Cadastro - Assistente Orçamental</h2>
 
+            {messageToUser.message &&
+              <Message text={messageToUser.message} type={messageToUser.type} />}
             <div className="form-group">
               <input
                 type="text"
                 id="nome"
                 placeholder="Nome de usuário"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
               />
             </div>
@@ -46,6 +125,8 @@ function HomePage() {
               <input
                 type="email"
                 id="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="E-mail"
                 required
               />
@@ -57,8 +138,8 @@ function HomePage() {
                 min={1}
                 id="salario"
                 placeholder="Salário"
-                value={salario}
-                onChange={(e) => setSalario(e.target.value)}
+                value={formData.salary}
+                onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
                 required
               />
             </div>
@@ -68,6 +149,8 @@ function HomePage() {
                 type="password"
                 id="senha"
                 placeholder="Senha"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
               />
             </div>
@@ -76,6 +159,8 @@ function HomePage() {
               <input
                 type="password"
                 id="senhaConfirmar"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 placeholder="Confirmar Senha"
                 required
               />
@@ -90,14 +175,17 @@ function HomePage() {
             <p id="tem-conta" onClick={changeForm}>Já possui uma conta?</p>
           </form>
         ) : (
-          <form onSubmit={handleSubmit} className="formulario">
+          <form onSubmit={handleLogin} className="formulario">
             <h2>Login - Assistente Orçamental</h2>
 
+            {messageToUser.message && <Message text={messageToUser.message} type={messageToUser.type} />}
             <div className="form-group">
               <input
-                type="text"
+                type="email"
                 id="email"
-                placeholder="E-mail ou usuário"
+                placeholder="exemplo@exemplo.com"
+                value={loginData.email}
+                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                 required
               />
             </div>
@@ -107,6 +195,8 @@ function HomePage() {
                 type="password"
                 id="senha"
                 placeholder="Senha"
+                value={loginData.password}
+                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                 required
               />
               <p id="tem-conta">Esqueci minha senha</p>
