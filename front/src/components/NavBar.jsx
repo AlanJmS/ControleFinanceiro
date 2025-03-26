@@ -38,7 +38,7 @@ function Navbar() {
         {menuOpen ? (
           <div id="user__menu">
             <NavLink to="/Perfil">Conta</NavLink>
-            <NavLink to="/">Mudar conta</NavLink>
+            <NavLink to="/" onClick={localStorage.removeItem("token")}>Mudar conta</NavLink>
           </div>
         ) : ""}
       </div>
