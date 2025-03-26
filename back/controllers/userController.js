@@ -7,7 +7,7 @@ const generateToken = (user) => {
 };
 
 export const newUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, salary = 0 } = req.body;
     const formatedEmail = email.trim().toLowerCase();
     if (!name || !email || !password) return res.status(400).json({ message: "Campos obrigatórios não preenchidos" });
 
@@ -24,7 +24,8 @@ export const newUser = async (req, res) => {
             data: {
                 name,
                 email: formatedEmail,
-                password
+                password,
+                salary: Number(salary)
             }
         });
         return res.status(201).json(newUser);
@@ -51,7 +52,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Senha incorreta" });
         };
         const token = generateToken(user);
-        return res.status(200).json({ message: "Login realizado com sucesso", token: token });
+        return res.status(200).json({ message: "Login realizado com sucesso", token: token, userId: user.id });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Erro ao fazer login" });
