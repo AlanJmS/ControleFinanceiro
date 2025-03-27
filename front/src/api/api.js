@@ -21,6 +21,19 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (loginData) => {
     const response = await api.post("/user/login", loginData);
+    if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+    }
+    return response;
+};
+
+export const getUserInfo = async () => {
+    const response = await api.get("/user/info", authHeader());
+    return response;
+};
+
+export const updateUser = async (userData) => {
+    const response = await api.put("/user/atualizar", userData, authHeader());
     return response;
 };
 
@@ -61,13 +74,13 @@ export const getAllCosts = async (walletId) =>{
     return response;
 }
 
-export const createCost = async (walletId) =>{
-    const response = await api.post(`/costs/`,authHeader());
+export const createCost = async (costData) =>{
+    const response = await api.post(`/costs/`,costData,authHeader());
     return response;
 }
 
-export const editCost = async (costId) => {
-    const response = await api.put(`/costs/${costId}`,authHeader());
+export const editCost = async (costId,costData) => {
+    const response = await api.put(`/costs/${costId}`,costData,authHeader());
     return response;
 }
 

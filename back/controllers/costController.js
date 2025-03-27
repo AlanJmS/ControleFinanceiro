@@ -64,7 +64,7 @@ export const createCost = async (req, res) => {
     const cost = await prisma.cost.create({
       data: {
         name,
-        amount,
+        amount: parseFloat(amount),
         date: new Date(date),
         category,
         wallet: { connect: { id: Number(walletId) } },
@@ -78,7 +78,7 @@ export const createCost = async (req, res) => {
       where: { id: Number(walletId) },
       data: {
         balance: {
-          increment: amount, // Incrementa o balance com o valor do gasto
+          increment: parseFloat(amount), // Incrementa o balance com o valor do gasto
         },
       },
     });

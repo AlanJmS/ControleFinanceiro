@@ -2,38 +2,46 @@ import React, { useState } from "react";
 import { useGastos } from "../context/GastosContext";
 import "./CadastroGastos.css";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation, data } from "react-router-dom";
+import {createCost} from "../api/api"
 
 function CadastroGastos() {
+  const location = useLocation();   
+  const {walletId} = location.state || {};
   const { adicionarGasto } = useGastos();
   const navigate = useNavigate();
 
   const [gasto, setGasto] = useState({
-    nome: "",
-    data: "",
-    tipo: "",
-    valor: "",
+    name: "",
+    date: "",
+    category: "",
+    amount: "",
   });
+  // console.log(gasto);
 
   const handleChange = (e) => {
     setGasto({ ...gasto, [e.target.name]: e.target.value });
   };
-
+  const dateObj = new Date(gasto.date+":00");
+  dateObj.setMinutes(dateObj.getMinutes() - dateObj.getTimezoneOffset());
+  const formatedDate = dateObj.toISOString().slice(0, 19).replace('T', ' ');
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!gasto.nome || !gasto.data || !gasto.valor) {
+    if (!gasto.name || !gasto.date || !gasto.amount) {
       alert("Preencha todos os campos obrigatórios!");
       return;
     }
-
+    
     const novoGasto = {
       ...gasto,
-      valor: parseFloat(gasto.valor).toFixed(2),
+      date: formatedDate,
+      walletId:parseInt(walletId),
+      amount: parseFloat(gasto.amount).toFixed(2),
     };
 
-    adicionarGasto(novoGasto);
-    navigate("/gastos", { state: { message: "Gasto adicionado com sucesso!" } });
+    createCost(novoGasto);
+    navigate(`/gastos/${walletId}`, { state: { message: "Gasto adicionado com sucesso!" } });
 
     setGasto({
       nome: "",
@@ -60,22 +68,22 @@ function CadastroGastos() {
             <input
             placeholder="Descrição"
               type="text"
-              name="nome"
-              value={gasto.nome}
+              name="name"
+              value={gasto.name}
               onChange={handleChange}
               required
             />
 
             <input
-              type="date"
-              name="data"
-              value={gasto.data}
+              type="datetime-local"
+              name="date"
+              value={gasto.date}
               onChange={handleChange}
               required
             />
 
             <label>Tipo do Gasto:</label>
-            <select name="tipo"  defaultValue="default" onChange={handleChange}>
+            <select name="category"  defaultValue="default" onChange={handleChange}>
               <option value="default" disabled >Selecionar</option>
               <option value="Alimentação">Alimentação</option>
               <option value="Transporte">Transporte</option>
@@ -87,8 +95,8 @@ function CadastroGastos() {
             <input
             placeholder="Valor"
               type="number"
-              name="valor"
-              value={gasto.valor}
+              name="amount"
+              value={gasto.amount}
               onChange={handleChange}
               required
             />

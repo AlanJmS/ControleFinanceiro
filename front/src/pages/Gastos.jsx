@@ -5,7 +5,7 @@ import "./Gastos.css";
 import { FaEdit, FaSave, FaTrash, FaWindowClose } from 'react-icons/fa';
 import Button from "../components/Button";
 import Message from "../components/Message";
-import { getAllCosts, createCost, editCost,deleteCost } from "../api/api";
+import { getAllCosts, editCost,deleteCost } from "../api/api";
 
 function Gastos() {
   const {carteiraId} = useParams();
@@ -13,7 +13,7 @@ function Gastos() {
   const { editarGasto, deletarGasto } = useGastos();
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
-  const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "", data: "2025-02-24" });
+  const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "", data: "" });
   const [selected, setSelected] = useState([]);
   const [projectMessage, setProjectMessage] = useState("");
 
@@ -38,7 +38,7 @@ function Gastos() {
   
     fetchGastos();
   }, [carteiraId]);
-  console.log(gastos.name);
+  
   const handleDelete = (index) => {
     deletarGasto([index]);
     setProjectMessage("Gasto deletado com sucesso!");
@@ -96,7 +96,7 @@ function Gastos() {
         <Button
           text="Novo gasto"
           customClass="blue second__hover"
-          onClick={() => navigate("/CadastroGastos")}
+          onClick={() => navigate("/CadastroGastos",{state: { walletId: carteiraId }})}
         />
       </div>
       {message && <Message type="success" text={message} />}
