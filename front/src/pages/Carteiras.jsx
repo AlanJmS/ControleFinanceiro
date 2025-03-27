@@ -156,7 +156,7 @@ export default function Carteiras() {
             <p>Valor: R$ {carteira.balance ? carteira.balance.toFixed(2) : "0.00"}</p>
             <button
               className="btn-detalhes"
-              onClick={() => navigate(`/GastosCarteira/${carteira.id}`)}
+              onClick={() => navigate(`/Gastos/${carteira.id}`)}
             >
               Ver mais detalhes <span className="icn"><FaPlusCircle /></span>
             </button>

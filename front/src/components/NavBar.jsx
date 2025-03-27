@@ -23,8 +23,8 @@ function Navbar() {
         <NavLink to="/MainPage" onClick={handleActiveLink} className={active === "MainPage" ? "active" : ""}>
           Início
         </NavLink>
-        <NavLink to="/Gastos" onClick={handleActiveLink} className={active === "MainPage" ? "active" : ""}>
-          Gastos
+        <NavLink to="/Carteiras" onClick={handleActiveLink} className={active === "MainPage" ? "active" : ""}>
+          Carteiras
         </NavLink>
         <NavLink to="/Metas" onClick={handleActiveLink} className={active === "Metas" ? "active" : ""}>
           Metas
