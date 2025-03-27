@@ -80,7 +80,8 @@ function HomePage() {
           type: "success",
         });
         setTimeout(() => {
-          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userId", response.data.userId);
+          localStorage.setItem("token", response.data.token);          
           navigate("/MainPage");
         }, 3000);
       }

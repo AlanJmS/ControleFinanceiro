@@ -1,37 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Carteiras.css";
-import { FaPencilAlt, FaTrashAlt, FaPlusCircle } from "react-icons/fa";
-import axios from "axios";
-import { createWallet, deleteWallet, editWallet, getWallets } from "../api/api";
+import { FaPencilAlt, FaTrashAlt, FaPlusCircle, FaUserEdit } from "react-icons/fa";
+import { createWallet, deleteWallet, editWallet, getWallets, addUserToWallet, removeUserFromWallet, getWallet } from "../api/api";
 
 export default function Carteiras() {
   const navigate = useNavigate();
-
   const [carteiras, setCarteiras] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [novaCarteira, setNovaCarteira] = useState({ nome: "", participantes: "" });
-  const [participantes, setParticipantes] = useState([]);
-  const [editandoParticipante, setEditandoParticipante] = useState(null);
-
+  const [modalType, setModalType] = useState('create'); // 'create' ou 'edit'
+  const [currentWallet, setCurrentWallet] = useState(null);
+  const [novaCarteira, setNovaCarteira] = useState({ 
+    name: "", 
+    balance: 0,
+    userEmails: [] 
+  });
+  const [emailParticipante, setEmailParticipante] = useState("");
+  const [walletUsers, setWalletUsers] = useState([]);
 
   const fetchCarteiras = async () => {
     try {
       const response = await getWallets();
-      const allWallets = response.data.map(wallet => ({
-        ...wallet,
-        editando: false
-      })) ;
-      setCarteiras(allWallets);
+      setCarteiras(response.data);
     } catch (error) {
       console.error("Erro ao buscar carteiras:", error);
       alert("Erro ao buscar carteiras. Por favor, tente novamente.");
     }
   };
 
+  const openCreateModal = () => {
+    setModalType('create');
+    setNovaCarteira({ name: "", balance: 0, userEmails: [] });
+    setShowModal(true);
+  };
+
+  const openEditModal = async (walletId) => {
+    try {
+      setModalType('edit');
+      const response = await getWallet(walletId);
+      const wallet = response.data;
+      setCurrentWallet(wallet);
+      
+      // Extrai os emails dos usuários associados
+      const users = wallet.usersWallet.map(uw => uw.user.email);
+      setWalletUsers(users);
+      setShowModal(true);
+    } catch (error) {
+      console.error("Erro ao buscar carteira:", error);
+      alert("Erro ao buscar informações da carteira.");
+    }
+  };
+
   const handleEditar = (id) => {
-    setCarteiras((prevCarteiras) =>
-      prevCarteiras.map((carteira) =>
+    setCarteiras(prevCarteiras =>
+      prevCarteiras.map(carteira =>
         carteira.id === id ? { ...carteira, editando: true } : carteira
       )
     );
@@ -39,73 +61,80 @@ export default function Carteiras() {
 
   const handleSalvar = async (id, novoNome) => {
     try {
-      const response = await editWallet(id, { name: novoNome });
-
-      setCarteiras((prevCarteiras) => {
-        return prevCarteiras.map((carteira) =>
-          carteira.id === id
-            ? { ...carteira, name: novoNome, editando: false }
-            : carteira
-        );
-      });
-      
+      await editWallet(id, { name: novoNome });
+      setCarteiras(prevCarteiras =>
+        prevCarteiras.map(carteira =>
+          carteira.id === id ? { ...carteira, name: novoNome, editando: false } : carteira
+        )
+      );
     } catch (error) {
-      console.error("Erro ao salvar alterações:", error.response?.data || error);
-      alert(error.response?.data?.message || "Erro ao salvar alterações. Tente novamente.");
+      console.error("Erro ao salvar alterações:", error);
+      alert(error.response?.data?.message || "Erro ao salvar alterações.");
     }
   };
 
   const handleApagar = async (id) => {
     try {
-      const response = await deleteWallet(id);
-
-      setCarteiras((prevCarteiras) =>
-        prevCarteiras.filter((carteira) => carteira.id !== id)
-      );
+      await deleteWallet(id);
+      setCarteiras(prevCarteiras => prevCarteiras.filter(carteira => carteira.id !== id));
       alert("Carteira apagada com sucesso!");
     } catch (error) {
-      console.error("Erro ao apagar carteira:", error.response?.data || error);
-      alert(error.response?.data?.message || "Erro ao apagar carteira. Tente novamente.");
+      console.error("Erro ao apagar carteira:", error);
+      alert(error.response?.data?.message || "Erro ao apagar carteira.");
     }
   };
 
   const handleCriarCarteira = async () => {
     try {
-      const response = await createWallet({
-        name: novaCarteira.nome,
-        balance: 0,
-        users: participantes.map((participante) => ({ name: participante })),
+      await createWallet({
+        name: novaCarteira.name,
+        balance: novaCarteira.balance,
+        userEmails: novaCarteira.userEmails
       });
-
-      const newWallet = {
-        ...response.data,
-        editando: false
-      };
-
-      setCarteiras((prevCarteiras) => [...prevCarteiras, newWallet]);
+      fetchCarteiras();
       setShowModal(false);
-      setNovaCarteira({ nome: "", participantes: "" });
-      setParticipantes([]);
     } catch (error) {
-      console.error("Erro ao criar carteira:", error.response?.data || error);
-      alert(error.response?.data?.message || "Erro ao criar carteira. Tente novamente.");
+      console.error("Erro ao criar carteira:", error);
+      alert(error.response?.data?.message || "Erro ao criar carteira.");
     }
   };
 
-  const handleAdicionarParticipante = () => {
-    if (novaCarteira.participantes.trim() !== "") {
-      setParticipantes((prevParticipantes) => [
-        ...prevParticipantes,
-        novaCarteira.participantes.trim(),
-      ]);
-      setNovaCarteira({ ...novaCarteira, participantes: "" });
+  const handleAdicionarParticipante = async () => {
+    if (!emailParticipante.trim()) return;
+    
+    try {
+      if (modalType === 'create') {
+        if (!novaCarteira.userEmails.includes(emailParticipante.trim())) {
+          setNovaCarteira(prev => ({
+            ...prev,
+            userEmails: [...prev.userEmails, emailParticipante.trim()]
+          }));
+        }
+      } else if (modalType === 'edit') {
+      await addUserToWallet(currentWallet.id, emailParticipante.trim());
+            setWalletUsers(prev => [...prev, emailParticipante.trim()]);      }
+      setEmailParticipante("");
+    } catch (error) {
+      console.error("Erro ao adicionar participante:", error);
+      alert(error.response?.data?.message || "Erro ao adicionar participante.");
     }
   };
 
-  const handleRemoverParticipante = (index) => {
-    setParticipantes((prevParticipantes) =>
-      prevParticipantes.filter((_, i) => i !== index)
-    );
+  const handleRemoverParticipante = async (email) => {
+    try {
+      if (modalType === 'create') {
+        setNovaCarteira(prev => ({
+          ...prev,
+          userEmails: prev.userEmails.filter(e => e !== email)
+        }));
+      } else if (modalType === 'edit') {
+        await removeUserFromWallet(currentWallet.id, email);
+        setWalletUsers(prev => prev.filter(e => e !== email));
+      }
+    } catch (error) {
+      console.error("Erro ao remover participante:", error);
+      alert(error.response?.data?.message || "Erro ao remover participante.");
+    }
   };
 
   useEffect(() => {
@@ -116,10 +145,7 @@ export default function Carteiras() {
     <section id="section-carteiras">
       <div className="header">
         <h1>Minhas Carteiras</h1>
-        <button
-          className="btn-criar-carteira"
-          onClick={() => setShowModal(true)}
-        >
+        <button className="btn-criar-carteira" onClick={openCreateModal}>
           Criar Carteira
         </button>
       </div>
@@ -139,15 +165,24 @@ export default function Carteiras() {
                 <h2>{carteira.name}</h2>
               )}
               <div className="card-actions">
-                <button
-                  className="btn-edit"
+                <button 
+                  className="btn-edit-users" 
+                  onClick={() => openEditModal(carteira.id)}
+                  title="Gerenciar participantes"
+                >
+                  <FaUserEdit />
+                </button>
+                <button 
+                  className="btn-edit" 
                   onClick={() => handleEditar(carteira.id)}
+                  title="Editar nome"
                 >
                   <FaPencilAlt />
                 </button>
-                <button
-                  className="btn-delete"
+                <button 
+                  className="btn-delete" 
                   onClick={() => handleApagar(carteira.id)}
+                  title="Excluir carteira"
                 >
                   <FaTrashAlt />
                 </button>
@@ -167,73 +202,70 @@ export default function Carteiras() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Criar Nova Carteira</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleCriarCarteira();
-              }}
-            >
+            <h2>{modalType === 'create' ? 'Criar Nova Carteira' : 'Gerenciar Participantes'}</h2>
+            
+            {modalType === 'create' && (
               <label>
                 Nome da Carteira:
                 <input
                   type="text"
-                  value={novaCarteira.nome}
-                  onChange={(e) =>
-                    setNovaCarteira({ ...novaCarteira, nome: e.target.value })
-                  }
+                  value={novaCarteira.name}
+                  onChange={(e) => setNovaCarteira({...novaCarteira, name: e.target.value})}
                   required
                 />
               </label>
-              <label>
-                Outros Participantes:
-                <div className="add-participant">
-                  <input
-                    type="text"
-                    value={novaCarteira.participantes}
-                    onChange={(e) =>
-                      setNovaCarteira({
-                        ...novaCarteira,
-                        participantes: e.target.value,
-                      })
-                    }
-                    placeholder="Digite o e-mail do participante"
-                  />
-                  <button
-                    type="button"
-                    className="btn-add-participant"
-                    onClick={handleAdicionarParticipante}
-                  >
-                    <FaPlusCircle />
-                  </button>
-                </div>
-              </label>
-              <div className="participants-list">
-                {participantes.map((participante, index) => (
-                  <div key={index} className="participant-item">
-                    <p>{participante}</p>
-                    <button
-                      className="btn-delete-participant"
-                      onClick={() => handleRemoverParticipante(index)}
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <div className="modal-actions">
-                <button type="submit" className="btn-save">
-                  Salvar
-                </button>
+            )}
+
+            <label>
+              {modalType === 'create' ? 'Adicionar Participantes' : 'Adicionar Participante'}
+              <div className="add-participant">
+                <input
+                  type="email"
+                  value={emailParticipante}
+                  onChange={(e) => setEmailParticipante(e.target.value)}
+                  placeholder="Digite o e-mail do participante"
+                />
                 <button
                   type="button"
-                  className="btn-cancel"
-                  onClick={() => setShowModal(false)}
+                  className="btn-add-participant"
+                  onClick={handleAdicionarParticipante}
                 >
-                  Cancelar
+                  <FaPlusCircle />
                 </button>
               </div>
-            </form>
+            </label>
+
+            <div className="participants-list">
+              <h4>Participantes:</h4>
+              {(modalType === 'create' ? novaCarteira.userEmails : walletUsers).map((email, index) => (
+                <div key={index} className="participant-item">
+                  <p>{email}</p>
+                  <button
+                    className="btn-delete-participant"
+                    onClick={() => handleRemoverParticipante(email)}
+                  >
+                    <FaTrashAlt />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="modal-actions">
+              <button 
+                type="button" 
+                className="btn-save"
+                onClick={modalType === 'create' ? handleCriarCarteira : () => setShowModal(false)}
+              >
+                {modalType === 'create' ? 'Criar' : 'Concluir'}
+              </button>
+              <button
+                type="button"
+                className="btn-cancel"
+                onClick={() => setShowModal(false)}
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
         </div>
       )}

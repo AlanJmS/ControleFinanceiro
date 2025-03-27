@@ -86,7 +86,8 @@ export function GastosProvider({ children }) {
     <GastosContext.Provider
       value={{
         user,
-        updateUser
+        updateUser,
+        orcamentoTotal: user.salary
       }}
     >
       {children}
