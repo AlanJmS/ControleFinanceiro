@@ -31,7 +31,7 @@ function Layout() {
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/Perfil" element={<Perfil/>}/>
           <Route path="/MainPage" element={<MainPage />} />
-          <Route path="/Gastos" element={<Gastos />} />
+          <Route path="/Gastos/:carteiraId" element={<Gastos />} />
           <Route path="/Carteiras" element={<Carteiras/>}/>
           <Route path="/CadastroGastos" element={<CadastroGastos />} />{" "}
           <Route path="/Metas" element={<Metas />} />

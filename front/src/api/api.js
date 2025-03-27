@@ -56,3 +56,22 @@ export const deleteWallet = async (walletId) => {
 };
 
 // Cost
+export const getAllCosts = async (walletId) =>{
+    const response = await api.get(`/costs/${walletId}`,authHeader());
+    return response;
+}
+
+export const createCost = async (walletId) =>{
+    const response = await api.post(`/costs/`,authHeader());
+    return response;
+}
+
+export const editCost = async (costId) => {
+    const response = await api.put(`/costs/${costId}`,authHeader());
+    return response;
+}
+
+export const deleteCost = async (costId) =>{
+    const response = await api.delete(`/costs/${costId}`,authHeader());
+    return response;
+}

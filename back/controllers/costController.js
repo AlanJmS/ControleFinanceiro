@@ -2,7 +2,7 @@ import prisma from "../config/prismaCl.js";
 
 // 🔹 Buscar todos os custos de uma carteira específica
 export const getAllCosts = async (req, res) => {
-    const userId = req.headers.userid;
+    const userId = req.user.id;
     const { walletId } = req.params;
 
     if (!userId) {
