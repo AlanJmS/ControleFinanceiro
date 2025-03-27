@@ -1,86 +1,92 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import * as api from "../api/api";
 
 const GastosContext = createContext();
 
-const loadInitialState = (key, defaultValue) => {
-  try {
-    const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : defaultValue;
-  } catch (error) {
-    console.error(`Error loading ${key} from localStorage:`, error);
-    return defaultValue;
-  }
-};
-
 export function GastosProvider({ children }) {
-  const [gastos, setGastos] = useState(() => loadInitialState("gastos", []));
-
-  const [salario, setSalario] = useState(() => {
-    const defaultSalario = { base: 0, rendasExtras: [] };
-    const loaded = loadInitialState("salario", defaultSalario);
-
-    return {
-      base: Number(loaded.base) || 0,
-      rendasExtras: Array.isArray(loaded.rendasExtras)
-        ? loaded.rendasExtras.map((renda) => ({
-            descricao: renda.descricao || "",
-            valor: Number(renda.valor) || 0,
-          }))
-        : [],
-    };
+  // Estado do usuário
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    salary: 0,
+    isLoading: true,
+    error: null
   });
 
+  // Carregar dados do usuário ao montar o componente
   useEffect(() => {
-    localStorage.setItem("gastos", JSON.stringify(gastos));
-  }, [gastos]);
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setUser(prev => ({
+            ...prev,
+            isLoading: false,
+            error: "Não autenticado"
+          }));
+          return;
+        }
 
-  useEffect(() => {
-    localStorage.setItem("salario", JSON.stringify(salario));
-  }, [salario]);
+        const response = await api.getUserInfo();
+        setUser({
+          name: response.data.name,
+          email: response.data.email,
+          salary: response.data.salary || 0,
+          isLoading: false,
+          error: null
+        });
+      } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error);
+        setUser(prev => ({
+          ...prev,
+          isLoading: false,
+          error: error.response?.data?.message || "Erro ao carregar dados do usuário"
+        }));
+      }
+    };
 
-  const orcamentoTotal =
-    salario.base +
-    (salario.rendasExtras?.reduce((acc, renda) => acc + renda.valor, 0) || 0);
+    fetchUserData();
+  }, []);
+
+  // Função para atualizar dados do usuário
+  const updateUser = async (userData) => {
+    try {
+      setUser(prev => ({ ...prev, isLoading: true }));
+
+      await api.updateUser({
+        name: userData.name,
+        email: userData.email,
+        salary: userData.salary
+      });
+
+      setUser({
+        name: userData.name,
+        email: userData.email,
+        salary: userData.salary,
+        isLoading: false,
+        error: null
+      });
+
+      return { success: true };
+    } catch (error) {
+      console.error('Erro ao atualizar usuário:', error);
+      setUser(prev => ({
+        ...prev,
+        isLoading: false,
+        error: error.response?.data?.message || "Erro ao atualizar dados"
+      }));
+      return {
+        success: false,
+        error: error.response?.data?.message || "Erro ao atualizar dados"
+      };
+    }
+  };
 
   return (
     <GastosContext.Provider
       value={{
-        gastos,
-        salario,
-        orcamentoTotal,
-        deletarGasto: (indexes) =>
-          setGastos((prev) => prev.filter((_, i) => !indexes.includes(i))),
-        setSalario: (novoSalario) =>
-          setSalario((prev) => ({
-            base: Number(novoSalario.base) || prev.base,
-            rendasExtras: Array.isArray(novoSalario.rendasExtras)
-              ? novoSalario.rendasExtras.map((renda) => ({
-                  descricao: renda.descricao || "",
-                  valor: Number(renda.valor) || 0,
-                }))
-              : prev.rendasExtras,
-          })),
-        adicionarGasto: (gasto) =>
-          setGastos((prev) => [
-            ...prev,
-            {
-              ...gasto,
-              valor: Number(gasto.valor) || 0,
-              data: new Date(gasto.data).toISOString(),
-            },
-          ]),
-        editarGasto: (index, novoGasto) =>
-          setGastos((prev) =>
-            prev.map((g, i) =>
-              i === index
-                ? {
-                    ...novoGasto,
-                    valor: Number(novoGasto.valor) || 0,
-                    data: new Date(novoGasto.data).toISOString(),
-                  }
-                : g
-            )
-          ),
+        user,
+        updateUser
       }}
     >
       {children}
@@ -90,5 +96,8 @@ export function GastosProvider({ children }) {
 
 export const useGastos = () => {
   const context = useContext(GastosContext);
+  if (!context) {
+    throw new Error('useGastos deve ser usado dentro de um GastosProvider');
+  }
   return context;
 };
