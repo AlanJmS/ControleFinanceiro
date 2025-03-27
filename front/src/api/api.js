@@ -37,7 +37,8 @@ export const updateUser = async (userData) => {
     return response;
 };
 
-// Wallet
+// Wallets
+
 export const createWallet = async (walletData) => {
     const response = await api.post("/wallets", walletData, authHeader());
     return response;
@@ -53,10 +54,25 @@ export const getWallet = async (walletId) => {
     return response;
 }
 
-export const addToWallet = async (walletId, userId) => {
-    const response = await api.post(`/wallets/${walletId}/addUser`, { userId }, authHeader());
+export const addUserToWallet = async (walletId, userEmail) => {
+    const response = await api.post(
+      `/wallets/${walletId}/addUser`,
+       {userEmail} ,
+      authHeader()
+    );
     return response;
-};
+  };
+  
+  export const removeUserFromWallet = async (walletId, userEmail) => {
+    const response = await api.delete(
+      `/wallets/${walletId}/removeUser`,
+      { 
+        data: { userEmail },
+        ...authHeader() 
+      }
+    );
+    return response;
+  };
 
 export const editWallet = async (walletId, walletData) => {
     const response = await api.put(`/wallets/${walletId}`, walletData, authHeader());
@@ -68,10 +84,15 @@ export const deleteWallet = async (walletId) => {
     return response;
 };
 
-// Cost
+// Costs
 export const getAllCosts = async (walletId) =>{
     const response = await api.get(`/costs/${walletId}`,authHeader());
     return response;
+}
+
+export const getCosts = async (walletId) =>{
+    const response = await api.get(`/costs/${walletId}`,authHeader());
+    return response.data;
 }
 
 export const createCost = async (costData) =>{

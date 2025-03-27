@@ -15,6 +15,9 @@ router.post("/", walletController.createWallet);
 // Adiciona um usuário a uma carteira
 router.post("/:walletId/addUser", walletController.addUserToWallet);
 
+// Remove um usuário de uma carteira
+router.delete("/:walletId/removeUser", walletController.removeUserFromWallet);
+
 // Edita uma carteira
 router.put("/:id", walletController.editWallet);
 
