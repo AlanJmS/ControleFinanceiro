@@ -4,6 +4,8 @@ import { userRouter } from "./routes/userRoute.js";
 import { walletRouter } from "./routes/walletRoute.js";
 import {costRouter} from "./routes/costRoute.js";
 import { auth } from "./middlewares/authMiddleware.js";
+import "dotenv/config";
+
 
 const app = express();
 app.use(express.json());

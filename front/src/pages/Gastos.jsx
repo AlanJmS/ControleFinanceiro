@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGastos } from "../context/GastosContext";
 import "./Gastos.css";
 import { FaEdit, FaSave, FaTrash, FaWindowClose } from 'react-icons/fa';
 import Button from "../components/Button";
 import Message from "../components/Message";
+import { getAllCosts, createCost, editCost,deleteCost } from "../api/api";
 
 function Gastos() {
-  const { gastos, editarGasto, deletarGasto } = useGastos();
+  const {carteiraId} = useParams();
+  const [gastos,setGastos] = useState([]);
+  const { editarGasto, deletarGasto } = useGastos();
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
   const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "", data: "2025-02-24" });
@@ -20,6 +23,22 @@ function Gastos() {
     message = location.state.message;
   };
 
+  useEffect(() => {
+    if (!carteiraId) return;
+  
+    const fetchGastos = async () => {
+      try {
+        const response = await getAllCosts(carteiraId);
+        setGastos(response.data); // Corrigido para acessar os dados corretamente
+      } catch (error) {
+        console.error("Erro ao buscar gastos:", error);
+        setProjectMessage("Erro ao carregar gastos.");
+      }
+    };
+  
+    fetchGastos();
+  }, [carteiraId]);
+  console.log(gastos.name);
   const handleDelete = (index) => {
     deletarGasto([index]);
     setProjectMessage("Gasto deletado com sucesso!");
@@ -164,10 +183,10 @@ function Gastos() {
                     </>
                   ) : (
                     <>
-                      <td>{gasto.nome}</td>
-                      <td>{formateDate(gasto.data)}</td>
-                      <td style={{ color: categoryColors[gasto.tipo] || "var(--textColor)" }}>{gasto.tipo}</td>
-                      <td>{`R$ ${gasto.valor}`}</td>
+                      <td>{gasto.name}</td>
+                      <td>{formateDate(gasto.date)}</td>
+                      <td style={{ color: categoryColors[gasto.category] || "var(--textColor)" }}>{gasto.category}</td>
+                      <td>{`R$ ${gasto.amount}`}</td>
                       <td>
                         <FaEdit className="table__button" onClick={() => handleEditClick(index)} />
                       </td>
