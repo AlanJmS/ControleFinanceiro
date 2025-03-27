@@ -2,15 +2,16 @@ import { NavLink } from "react-router-dom";
 import "./NavBar.css";
 import { FaAngleDown, FaUserCircle } from "react-icons/fa";
 import { useState } from "react";
+import { useGastos } from "../context/GastosContext";
 
 function Navbar() {
-  const userName = localStorage.getItem("nome");
   const [active, setActive] = useState("/MainPage");
   const [menuOpen, setMenuOpen] = useState(false);
-
   const handleActiveLink = (link) => setActive(link);
   const handleMenuStats = () => setMenuOpen(!menuOpen);
-
+  const { user } = useGastos();
+  const userName = user.name || "Usuário";
+  
   return (
     <nav id="navBar">
       <div id="logo">
@@ -38,7 +39,7 @@ function Navbar() {
         {menuOpen ? (
           <div id="user__menu">
             <NavLink to="/Perfil">Conta</NavLink>
-            <NavLink to="/" onClick={localStorage.removeItem("token")}>Mudar conta</NavLink>
+            <NavLink to="/">Mudar conta</NavLink>
           </div>
         ) : ""}
       </div>
