@@ -42,6 +42,7 @@ function CadastroGastos() {
 
     createCost(novoGasto);
     navigate(`/gastos/${walletId}`, { state: { message: "Gasto adicionado com sucesso!" } });
+    window.location.reload();
 
     setGasto({
       nome: "",

@@ -40,14 +40,18 @@ function Gastos() {
   }, [carteiraId]);
   
   const handleDelete = (index) => {
-    deletarGasto([index]);
+    deleteCost(index);
     setProjectMessage("Gasto deletado com sucesso!");
+    window.location.reload();
   };
 
   const handleDeleteSelected = () => {
     deletarGasto(selected);
     setSelected([]);
     setProjectMessage("Gastos deletados com sucesso!");
+    setTimeout(()=>{
+      window.location.reload();
+    },3000);
   };
 
   const handleCheckboxChange = (index) => {
@@ -191,14 +195,14 @@ function Gastos() {
                         <FaEdit className="table__button" onClick={() => handleEditClick(index)} />
                       </td>
                       <td>
-                        <FaTrash className="table__button trash" onClick={() => handleDelete(index)} />
+                        <FaTrash className="table__button trash" onClick={() => handleDelete(gasto.id)} />
                       </td>
                       <td>
                         <input
                           style={{ cursor: "pointer" }}
                           type="checkbox"
-                          checked={selected.includes(index)}
-                          onChange={() => handleCheckboxChange(index)}
+                          checked={selected.includes(gasto.id)}
+                          onChange={() => handleCheckboxChange(gasto.id)}
                         />
                       </td>
                     </>
