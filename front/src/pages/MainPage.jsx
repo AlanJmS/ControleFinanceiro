@@ -18,15 +18,11 @@ export default function MainPage() {
   const [carteiraSelecionada, setCarteiraSelecionada] = useState(null);
   const [gastos, setGastos] = useState([]);
 
-useEffect(() => {
-  return () => {
+  useEffect(() => {
     setCarteiras([]);
     setGastos([]);
     setCarteiraSelecionada(null);
-  };
-}, []);
 
-  useEffect(() => {
     const fetchCarteiras = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -61,7 +57,7 @@ useEffect(() => {
 
         const data = await getCosts(carteiraSelecionada);
         setGastos(Array.isArray(data) ? data : []);
-        console.log("Gastos:", gastos); 
+        console.log("Gastos:", gastos);
       } catch (error) {
         console.error("Erro ao buscar gastos:", error);
         alert("Erro ao carregar os gastos. Tente novamente.");

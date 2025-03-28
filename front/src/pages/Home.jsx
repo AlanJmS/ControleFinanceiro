@@ -1,9 +1,10 @@
 import { useState } from "react";
 import * as api from "../api/api";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import Button from "../components/Button";
 import Message from "../components/Message";
+import { useGastos } from "../context/GastosContext";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function HomePage() {
     message: "",
     type: ""
   });
+  const { fetchUserData } = useGastos();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -79,11 +81,15 @@ function HomePage() {
           message: "Entrando...",
           type: "success",
         });
+
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("token", response.data.token);
+
+        const loadUserData = await fetchUserData(response);
+
         setTimeout(() => {
-          localStorage.setItem("userId", response.data.userId);
-          localStorage.setItem("token", response.data.token);          
           navigate("/MainPage");
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
