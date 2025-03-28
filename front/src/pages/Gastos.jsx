@@ -21,6 +21,7 @@ function Gastos() {
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
   const [editGasto, setEditGasto] = useState({ name: "", amount: "", category: "", date: "" });
+  const [editGasto, setEditGasto] = useState({ name: "", amount: "", category: "", date: "" });
   const [selected, setSelected] = useState([]);
   const [projectMessage, setProjectMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
@@ -151,7 +152,7 @@ function Gastos() {
       setLocalLoading(false);
     }
   };
-
+  console.log(editGasto);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditGasto({ ...editGasto, [name]: value });
@@ -227,6 +228,8 @@ function Gastos() {
                           type="text"
                           name="name"
                           value={editGasto.name}
+                          name="name"
+                          value={editGasto.name}
                           onChange={handleChange}
                           className="edit-input"
                           placeholder="Gasto"
@@ -245,6 +248,8 @@ function Gastos() {
                         <select
                           name="category"
                           value={editGasto.category}
+                          name="category"
+                          value={editGasto.category}
                           onChange={handleChange}
                           className="edit-input"
                         >
@@ -258,6 +263,8 @@ function Gastos() {
                       <td>
                         <input
                           type="number"
+                          name="amount"
+                          value={editGasto.amount}
                           name="amount"
                           value={editGasto.amount}
                           onChange={handleChange}
