@@ -49,11 +49,13 @@ function HomePage() {
       console.log(response);
       if (response.status === 201) {
         setMessageToUser({
-          message: "Usuário registrado com sucesso!",
+          message: "Usuário registrado com sucesso! Faça login.",
           type: "success",
         });
-        // setForm("login");
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+          setForm("/login");
+        }, 1000);
       }
     } catch (error) {
       console.error("Erro ao registrar usuário:", error);
