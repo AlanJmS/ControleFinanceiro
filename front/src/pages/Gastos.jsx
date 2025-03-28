@@ -21,7 +21,6 @@ function Gastos() {
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
   const [editGasto, setEditGasto] = useState({ name: "", amount: "", category: "", date: "" });
-  const [editGasto, setEditGasto] = useState({ name: "", amount: "", category: "", date: "" });
   const [selected, setSelected] = useState([]);
   const [projectMessage, setProjectMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
