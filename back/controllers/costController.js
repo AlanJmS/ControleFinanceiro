@@ -94,7 +94,7 @@ export const createCost = async (req, res) => {
 export const editCost = async (req, res) => {
   const userId = req.user.id;
   const { id } = req.params;
-  const { name, amount, date } = req.body;
+  const { name, amount, date, category} = req.body;
 
   if (!userId) {
     return res.status(400).json({ message: "Usuário não autenticado" });
@@ -117,15 +117,16 @@ export const editCost = async (req, res) => {
     }
 
     // Calcula a diferença entre o valor antigo e o novo valor
-    const difference = amount - cost.amount;
+    const difference = parseFloat(amount) - cost.amount;
 
     // Atualiza o custo
     const updatedCost = await prisma.cost.update({
       where: { id: Number(id) },
       data: {
         name: name || cost.name,
-        amount: amount !== undefined ? amount : cost.amount,
+        amount: parseFloat(amount) !== undefined ? parseFloat(amount) : cost.amount,
         date: date ? new Date(date) : cost.date,
+        category: category || cost.category
       },
       include: { user: true },
     });
