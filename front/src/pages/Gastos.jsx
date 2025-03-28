@@ -13,7 +13,7 @@ function Gastos() {
   const { editarGasto, deletarGasto } = useGastos();
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
-  const [editGasto, setEditGasto] = useState({ nome: "", valor: "", tipo: "", data: "" });
+  const [editGasto, setEditGasto] = useState({ name: "", amount: "", category: "", date: "" });
   const [selected, setSelected] = useState([]);
   const [projectMessage, setProjectMessage] = useState("");
 
@@ -65,12 +65,25 @@ function Gastos() {
     setEditGasto(gastos[index]);
   };
 
-  const handleSaveEdit = (index) => {
-    editarGasto(index, editGasto);
+  function formatDateTime(dateString) {
+    const dateObj = new Date(dateString+":00");
+    dateObj.setMinutes(dateObj.getMinutes() - dateObj.getTimezoneOffset());
+    const formatedDate = dateObj.toISOString().slice(0, 19).replace('T', ' ');
+    return formatedDate;
+  }
+
+  const handleSaveEdit = (index,oldDate) => {
+    const editBody = {
+      ...editGasto,
+      date: editGasto.date != oldDate ? formatDateTime(editGasto.date): oldDate,
+      amount: parseFloat(editGasto.amount).toFixed(2)
+    }
+    editCost(index, editBody);
     setEditIndex(null);
     setProjectMessage("Gasto editado com sucesso!");
+    window.location.reload();
   };
-
+  console.log(editGasto);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditGasto({ ...editGasto, [name]: value });
@@ -137,8 +150,8 @@ function Gastos() {
                       <td>
                         <input
                           type="text"
-                          name="nome"
-                          value={editGasto.nome}
+                          name="name"
+                          value={editGasto.name}
                           onChange={handleChange}
                           className="edit-input"
                           placeholder="Gasto"
@@ -146,18 +159,18 @@ function Gastos() {
                       </td>
                       <td>
                         <input
-                          type="date"
-                          name="data"
-                          value={editGasto.data}
+                          type="datetime-local"
+                          name="date"
+                          value={editGasto.date}
                           onChange={handleChange}
                           className="edit-input"
-                          placeholder={formateDate(editGasto.data)}
+                          placeholder={editGasto.date.slice(0,-8)}
                         />
                       </td>
                       <td>
                         <select
-                          name="tipo"
-                          value={editGasto.tipo}
+                          name="category"
+                          value={editGasto.category}
                           onChange={handleChange}
                           className="edit-input"
                         >
@@ -171,15 +184,15 @@ function Gastos() {
                       <td>
                         <input
                           type="number"
-                          name="valor"
-                          value={editGasto.valor}
+                          name="amount"
+                          value={editGasto.amount}
                           onChange={handleChange}
                           className="edit-input"
-                          placeholder={editGasto.valor}
+                          placeholder={editGasto.amount}
                         />
                       </td>
                       <td>
-                        <FaSave onClick={() => handleSaveEdit(index)} className="table__button" />
+                        <FaSave onClick={() => handleSaveEdit(gasto.id,gasto.date)} className="table__button" />
                       </td>
                       <td>
                         <FaWindowClose onClick={() => setEditIndex(null)} className="table__button trash" />
