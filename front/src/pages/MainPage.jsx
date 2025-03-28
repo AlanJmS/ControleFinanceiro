@@ -110,9 +110,9 @@ export default function MainPage() {
                 }
               />
               <Button
-                text="Novo gasto"
-                onClick={() => navigate("/CadastroGastos")}
-              />
+                text="Ver carteiras"
+                onClick={() => navigate("/Carteiras")}
+                />
             </div>
           </div>
         </section>

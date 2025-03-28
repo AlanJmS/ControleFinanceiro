@@ -227,8 +227,6 @@ function Gastos() {
                           type="text"
                           name="name"
                           value={editGasto.name}
-                          name="name"
-                          value={editGasto.name}
                           onChange={handleChange}
                           className="edit-input"
                           placeholder="Gasto"
@@ -247,8 +245,6 @@ function Gastos() {
                         <select
                           name="category"
                           value={editGasto.category}
-                          name="category"
-                          value={editGasto.category}
                           onChange={handleChange}
                           className="edit-input"
                         >
@@ -262,8 +258,6 @@ function Gastos() {
                       <td>
                         <input
                           type="number"
-                          name="amount"
-                          value={editGasto.amount}
                           name="amount"
                           value={editGasto.amount}
                           onChange={handleChange}

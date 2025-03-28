@@ -1,4 +1,3 @@
-// src/components/charts/PieChartComponent.jsx
 import React from "react";
 import Select from "react-select";
 import {
@@ -167,7 +166,7 @@ const PieChartComponent = ({ data, carteiras, carteiraSelecionada, setCarteiraSe
               innerRadius={50}
               outerRadius={75}
               fill="#8884d8"
-              paddingAngle={5}
+              paddingAngle={5 }
               dataKey="value"
               label={({ name, value }) => `${name}: ${value}%`}
             >
