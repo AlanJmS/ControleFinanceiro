@@ -45,7 +45,9 @@ export function GastosProvider({ children }) {
       }
     };
 
-    fetchUserData();
+    setTimeout(() => {
+      fetchUserData();
+    }, 1000);
   }, []);
 
   // Função para atualizar dados do usuário
